@@ -62,7 +62,7 @@ function LoginForm() {
       <CardHeader className="space-y-2 items-center text-center pb-6">
         <div className="w-20 h-20 relative mb-2 mx-auto">
           <Image
-            src="/sproutLarge.png"
+            src="/mzeduLogo-noBg.png"
             alt="Mwanda Mzedu Sacco Logo"
             fill
             className="object-contain"
