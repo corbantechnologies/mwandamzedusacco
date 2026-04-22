@@ -34,11 +34,9 @@ function CreateMember({ closeModal, openModal }) {
         <Formik
           initialValues={{
             first_name: "",
+            middle_name: "",
             last_name: "",
             email: "",
-            employer: "", // a select field with options: Tamarind Management Limited, and others. If Tamarind Management Limited, payroll_no is a must
-            payroll_no: '', // optional
-            phone: "",
             gender: "",
             member_no: "",
           }}
@@ -96,6 +94,23 @@ function CreateMember({ closeModal, openModal }) {
 
                 <div className="space-y-2">
                   <Label
+                    htmlFor="middle_name"
+                    className="text-base text-black font-medium"
+                  >
+                    Middle Name (Optional)
+                  </Label>
+                  <Field
+                    as={Input}
+                    type="text"
+                    name="middle_name"
+                    id="middle_name"
+                    placeholder="e.g. Doe"
+                    className="border-black   rounded text-base py-2"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label
                     htmlFor="last_name"
                     className="text-base text-black font-medium"
                   >
@@ -128,61 +143,6 @@ function CreateMember({ closeModal, openModal }) {
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
                   </Field>
-                </div>
-
-                <div className="space-y-2">
-                  <Label
-                    htmlFor="employer"
-                    className="text-base text-black font-medium"
-                  >
-                    Employer
-                  </Label>
-                  <Field
-                    as="select"
-                    name="employer"
-                    id="employer"
-                    className="w-full border border-black rounded px-3 py-2 text-base focus:ring-2   transition-colors"
-                  >
-                    <option value="">Select Employer</option>
-                    <option value="Tamarind Management Limited">Tamarind Management Limited</option>
-                    <option value="Other">Other</option>
-                  </Field>
-                </div>
-
-                {values.employer === "Tamarind Management Limited" && (
-                  <div className="space-y-2">
-                    <Label
-                      htmlFor="payroll_no"
-                      className="text-base text-black font-medium"
-                    >
-                      Payroll Number
-                    </Label>
-                    <Field
-                      as={Input}
-                      type="text"
-                      name="payroll_no"
-                      id="payroll_no"
-                      placeholder="e.g. 12345"
-                      className="border-black   rounded text-base py-2"
-                    />
-                  </div>
-                )}
-
-                <div className="space-y-2">
-                  <Label
-                    htmlFor="phone"
-                    className="text-base text-black font-medium"
-                  >
-                    Phone
-                  </Label>
-                  <Field
-                    as={Input}
-                    type="text"
-                    name="phone"
-                    id="phone"
-                    placeholder="254700000000"
-                    className="border-black   rounded text-base py-2"
-                  />
                 </div>
 
                 <div className="space-y-2">
