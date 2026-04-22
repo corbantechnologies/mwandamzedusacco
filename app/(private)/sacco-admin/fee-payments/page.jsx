@@ -78,35 +78,35 @@ export default function FeePaymentsManagementPage() {
             </div>
 
             {/* Stats Overview */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
                 <Card className="border shadow-sm bg-accent text-white rounded-lg">
-                    <CardHeader className="p-6">
+                    <CardHeader className="p-5 md:p-6">
                         <CardDescription className="text-white/60 uppercase tracking-widest text-[9px]">Total Receivables</CardDescription>
-                        <CardTitle className="text-3xl font-bold">
+                        <CardTitle className="text-2xl md:text-3xl font-bold">
                             {feeAccounts?.reduce((sum, acc) => sum + Number(acc.outstanding_balance || 0), 0).toLocaleString()}
                         </CardTitle>
                     </CardHeader>
                 </Card>
                 <Card className="border shadow-sm bg-white rounded-lg">
-                    <CardHeader className="p-6">
+                    <CardHeader className="p-5 md:p-6">
                         <CardDescription className="text-slate-400 uppercase tracking-widest text-[9px]">Accounts Outstanding</CardDescription>
-                        <CardTitle className="text-2xl font-bold text-slate-800">
+                        <CardTitle className="text-xl md:text-2xl font-bold text-slate-800">
                             {feeAccounts?.filter(a => Number(a.outstanding_balance) > 0).length || 0}
                         </CardTitle>
                     </CardHeader>
                 </Card>
                 <Card className="border shadow-sm bg-white rounded-lg">
-                    <CardHeader className="p-6">
+                    <CardHeader className="p-5 md:p-6">
                         <CardDescription className="text-slate-400 uppercase tracking-widest text-[9px]">Fully Paid</CardDescription>
-                        <CardTitle className="text-2xl font-bold text-emerald-600">
+                        <CardTitle className="text-xl md:text-2xl font-bold text-emerald-600">
                             {feeAccounts?.filter(a => Number(a.outstanding_balance) === 0).length || 0}
                         </CardTitle>
                     </CardHeader>
                 </Card>
                 <Card className="border shadow-sm bg-white rounded-lg">
-                    <CardHeader className="p-6">
+                    <CardHeader className="p-5 md:p-6">
                         <CardDescription className="text-slate-400 uppercase tracking-widest text-[9px]">Avg Fee Bal</CardDescription>
-                        <CardTitle className="text-2xl font-bold text-slate-800">
+                        <CardTitle className="text-xl md:text-2xl font-bold text-slate-800">
                             {feeAccounts?.length ? Math.round(feeAccounts.reduce((sum, acc) => sum + Number(acc.outstanding_balance || 0), 0) / feeAccounts.length).toLocaleString() : 0}
                         </CardTitle>
                     </CardHeader>
@@ -115,17 +115,19 @@ export default function FeePaymentsManagementPage() {
 
             {/* Main Content Tabs */}
             <Tabs defaultValue="list" className="w-full">
-                <TabsList className="bg-white border p-1 h-12 shadow-sm mb-6 rounded">
-                    <TabsTrigger value="list" className="px-6 data-[state=active]:bg-slate-50 data-[state=active]:text-[#174271] text-xs uppercase tracking-wider transition-all">
-                        <ListFilter className="w-4 h-4 mr-2" /> List View
-                    </TabsTrigger>
-                    <TabsTrigger value="bulk-create" className="px-6 data-[state=active]:bg-slate-50 data-[state=active]:text-[#174271] text-xs uppercase tracking-wider transition-all">
-                        <Plus className="w-4 h-4 mr-2" /> Manual Batch
-                    </TabsTrigger>
-                    <TabsTrigger value="bulk-upload" className="px-6 data-[state=active]:bg-slate-50 data-[state=active]:text-[#174271] text-xs uppercase tracking-wider transition-all">
-                        <FileUp className="w-4 h-4 mr-2" /> CSV Import
-                    </TabsTrigger>
-                </TabsList>
+                <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0 mb-6">
+                    <TabsList className="flex w-max sm:w-full bg-white border p-1 h-12 shadow-sm rounded">
+                        <TabsTrigger value="list" className="flex-1 px-4 sm:px-6 data-[state=active]:bg-slate-50 data-[state=active]:text-[#174271] text-[10px] sm:text-xs uppercase tracking-wider transition-all">
+                            <ListFilter className="w-4 h-4 mr-2" /> List View
+                        </TabsTrigger>
+                        <TabsTrigger value="bulk-create" className="flex-1 px-4 sm:px-6 data-[state=active]:bg-slate-50 data-[state=active]:text-[#174271] text-[10px] sm:text-xs uppercase tracking-wider transition-all">
+                            <Plus className="w-4 h-4 mr-2" /> Manual Batch
+                        </TabsTrigger>
+                        <TabsTrigger value="bulk-upload" className="flex-1 px-4 sm:px-6 data-[state=active]:bg-slate-50 data-[state=active]:text-[#174271] text-[10px] sm:text-xs uppercase tracking-wider transition-all">
+                            <FileUp className="w-4 h-4 mr-2" /> CSV Import
+                        </TabsTrigger>
+                    </TabsList>
+                </div>
 
                 {/* List Tab */}
                 <TabsContent value="list" className="animate-in fade-in slide-in-from-bottom-2 duration-300 space-y-6">
