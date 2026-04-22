@@ -84,7 +84,7 @@ function BulkUploadCreateExistingLoan({ isOpen, onClose, onBatchSuccess, isInlin
                     variant="outline"
                     size="sm"
                     onClick={handleDownloadTemplate}
-                    className="border-[#174271] text-[#174271] hover:bg-[#174271] hover:text-white font-semibold px-6 h-10 transition-all shadow-sm rounded"
+                    className="border-[#174271] text-[#174271] hover:bg-accent hover:text-white font-semibold px-6 h-10 transition-all shadow-sm rounded"
                 >
                     Get Template
                 </Button>
@@ -108,7 +108,7 @@ function BulkUploadCreateExistingLoan({ isOpen, onClose, onBatchSuccess, isInlin
 
                     {file ? (
                         <div className="flex flex-col items-center space-y-4 animate-in fade-in zoom-in-95">
-                            <div className="p-5 bg-[#174271] rounded text-white shadow-sm ring-2 ring-blue-50">
+                            <div className="p-5 bg-accent rounded text-white shadow-sm ring-2 ring-blue-50">
                                 <FileCheck className="w-10 h-10" />
                             </div>
                             <div className="space-y-1">
@@ -149,7 +149,7 @@ function BulkUploadCreateExistingLoan({ isOpen, onClose, onBatchSuccess, isInlin
                 <div className="flex justify-center pt-2">
                     <Button
                         type="submit"
-                        className="bg-[#174271] hover:bg-[#12355a] text-white px-24 h-14 rounded font-semibold text-lg shadow-sm transition-all active:scale-95 disabled:opacity-30 flex items-center gap-3 uppercase tracking-tight"
+                        className="bg-accent hover:bg-[#12355a] text-white px-24 h-14 rounded font-semibold text-lg shadow-sm transition-all active:scale-95 disabled:opacity-30 flex items-center gap-3 uppercase tracking-tight"
                         disabled={loading || !file}
                     >
                         {loading ? "Processing..." : "Start Import"}

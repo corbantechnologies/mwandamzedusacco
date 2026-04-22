@@ -1,14 +1,14 @@
 "use client";
 
 import React, { use, useState } from "react";
-import { 
-    ArrowLeft, 
-    Banknote, 
-    History, 
-    Info, 
-    TrendingUp, 
-    CheckCircle2, 
-    Clock, 
+import {
+    ArrowLeft,
+    Banknote,
+    History,
+    Info,
+    TrendingUp,
+    CheckCircle2,
+    Clock,
     AlertCircle,
     User,
     FileText,
@@ -63,7 +63,7 @@ export default function ExistingLoanDetailPage({ params }) {
                 <AlertCircle className="h-16 w-16 text-red-500 opacity-20" />
                 <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Loan Not Found</h2>
                 <p className="text-slate-500 font-medium">The existing loan account you are looking for does not exist or has been removed.</p>
-                <Button onClick={() => router.push("/sacco-admin/onboarding/existing-loans")} className="bg-[#174271] mt-4 font-bold rounded">
+                <Button onClick={() => router.push("/sacco-admin/onboarding/existing-loans")} className="bg-accent mt-4 font-bold rounded">
                     Back to Inventory
                 </Button>
             </div>
@@ -105,9 +105,9 @@ export default function ExistingLoanDetailPage({ params }) {
             {/* Header */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                 <div className="flex items-center gap-5">
-                    <Button 
-                        variant="ghost" 
-                        size="icon" 
+                    <Button
+                        variant="ghost"
+                        size="icon"
                         onClick={() => router.back()}
                         className="h-12 w-12 rounded bg-white shadow-sm border border-slate-200 hover:bg-slate-50 transition-all active:scale-95"
                     >
@@ -123,17 +123,17 @@ export default function ExistingLoanDetailPage({ params }) {
                             </Badge>
                         </div>
                         <p className="text-slate-500 font-medium flex items-center gap-2">
-                             <span className="font-mono text-xs bg-slate-100 px-2 py-0.5 rounded border">ACC: {loan.account_number}</span>
-                             <span className="text-slate-300">•</span>
-                             <span className="text-xs uppercase tracking-tighter">Onboarded Account Detail</span>
+                            <span className="font-mono text-xs bg-slate-100 px-2 py-0.5 rounded border">ACC: {loan.account_number}</span>
+                            <span className="text-slate-300">•</span>
+                            <span className="text-xs uppercase tracking-tighter">Onboarded Account Detail</span>
                         </p>
                     </div>
                 </div>
 
                 <div className="flex gap-3 w-full md:w-auto">
-                    <Button 
+                    <Button
                         onClick={() => setIsPaymentModalOpen(true)}
-                        className="bg-[#174271] hover:bg-[#12355a] text-white font-semibold h-12 px-8 rounded shadow-sm flex-1 md:flex-none flex items-center gap-2 transition-all active:scale-95"
+                        className="bg-accent hover:bg-[#12355a] text-white font-semibold h-12 px-8 rounded shadow-sm flex-1 md:flex-none flex items-center gap-2 transition-all active:scale-95"
                     >
                         <Banknote className="w-5 h-5" /> Log Payment
                     </Button>
@@ -145,7 +145,7 @@ export default function ExistingLoanDetailPage({ params }) {
                 <div className="lg:col-span-3 space-y-8">
                     {/* Financial Summary Cards */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <Card className="bg-[#174271] border-none shadow-sm text-white rounded overflow-hidden relative group">
+                        <Card className="bg-accent border-none shadow-sm text-white rounded overflow-hidden relative group">
                             <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-110 transition-transform duration-500">
                                 <TrendingUp className="w-24 h-24" />
                             </div>
@@ -250,7 +250,7 @@ export default function ExistingLoanDetailPage({ params }) {
                         </CardHeader>
                         <CardContent className="p-5 space-y-4">
                             <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 rounded bg-[#174271] flex items-center justify-center text-white font-semibold text-lg shadow-sm ring-4 ring-blue-50">
+                                <div className="w-12 h-12 rounded bg-accent flex items-center justify-center text-white font-semibold text-lg shadow-sm ring-4 ring-blue-50">
                                     {loan.member_name?.charAt(0) || "U"}
                                 </div>
                                 <div className="space-y-0.5">
@@ -290,8 +290,8 @@ export default function ExistingLoanDetailPage({ params }) {
                             </div>
                         </CardContent>
                     </Card>
-                    
-                    <div className="p-6 bg-[#174271] rounded text-white space-y-4 shadow-sm ring-4 ring-blue-50">
+
+                    <div className="p-6 bg-accent rounded text-white space-y-4 shadow-sm ring-4 ring-blue-50">
                         <div className="flex items-center gap-3">
                             <Info className="w-5 h-5 text-blue-200" />
                             <p className="font-semibold text-sm tracking-tight">Onboarding Notice</p>
@@ -304,9 +304,9 @@ export default function ExistingLoanDetailPage({ params }) {
             </div>
 
             {/* Modals */}
-            <CreateExistingLoanPayment 
-                isOpen={isPaymentModalOpen} 
-                onClose={() => { setIsPaymentModalOpen(false); refetch(); }} 
+            <CreateExistingLoanPayment
+                isOpen={isPaymentModalOpen}
+                onClose={() => { setIsPaymentModalOpen(false); refetch(); }}
                 initialLoanAcc={loan.account_number}
             />
         </div>

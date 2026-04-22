@@ -1,14 +1,14 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { 
-    Plus, 
-    HandCoins, 
-    History, 
-    TrendingUp, 
-    Users, 
-    FileSpreadsheet, 
-    Table as TableIcon, 
+import {
+    Plus,
+    HandCoins,
+    History,
+    TrendingUp,
+    Users,
+    FileSpreadsheet,
+    Table as TableIcon,
     ListFilter,
     Search,
     Eye,
@@ -49,11 +49,11 @@ import BulkUploadCreateExistingLoanPayment from "@/forms/existingloanspayments/B
 
 export default function ExistingLoansOnboardingPage() {
     const router = useRouter();
-    
+
     // Core Data Fetching
     const { data: loans, isLoading: isLoadingLoans, refetch: refetchLoans } = useFetchExistingLoans();
     const { data: payments, isLoading: isLoadingPayments, refetch: refetchPayments } = useFetchExistingLoanPayments();
-    
+
     // Dependency Pre-fetching (to ensure forms have data ready)
     useFetchMembers();
     useFetchGLAccounts();
@@ -66,7 +66,7 @@ export default function ExistingLoansOnboardingPage() {
 
     const filteredLoans = useMemo(() => {
         if (!loans) return [];
-        return loans.filter(loan => 
+        return loans.filter(loan =>
             loan.member_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
             loan.account_number?.toLowerCase().includes(searchTerm.toLowerCase())
         );
@@ -103,9 +103,9 @@ export default function ExistingLoansOnboardingPage() {
                     </div>
                 </div>
 
-                <Button 
+                <Button
                     onClick={() => setIsIndividualModalOpen(true)}
-                    className="bg-[#174271] hover:bg-[#12355a] text-white font-semibold px-6 h-12 flex items-center gap-2 rounded shadow-sm"
+                    className="bg-accent hover:bg-[#12355a] text-white font-semibold px-6 h-12 flex items-center gap-2 rounded shadow-sm"
                 >
                     <Plus className="w-5 h-5" /> New Individual Loan
                 </Button>
@@ -144,7 +144,7 @@ export default function ExistingLoansOnboardingPage() {
                     </CardHeader>
                     <CardContent className="px-5 pb-5 pt-0">
                         <div className="flex items-center gap-1 text-[10px] text-slate-400 font-semibold uppercase tracker-tighter">
-                             Total Onboarded
+                            Total Onboarded
                         </div>
                     </CardContent>
                 </Card>
@@ -165,16 +165,16 @@ export default function ExistingLoansOnboardingPage() {
             {/* Main Tabs */}
             <Tabs defaultValue="list" className="w-full">
                 <TabsList className="bg-white border p-1 h-14 shadow-sm rounded mb-8 flex ring-1 ring-slate-100">
-                    <TabsTrigger value="list" className="flex-1 rounded data-[state=active]:bg-[#174271] data-[state=active]:text-white text-xs font-semibold uppercase tracking-wider transition-all">
+                    <TabsTrigger value="list" className="flex-1 rounded data-[state=active]:bg-accent data-[state=active]:text-white text-xs font-semibold uppercase tracking-wider transition-all">
                         <ListFilter className="w-4 h-4 mr-2" /> List View
                     </TabsTrigger>
-                    <TabsTrigger value="manual" className="flex-1 rounded data-[state=active]:bg-[#174271] data-[state=active]:text-white text-xs font-semibold uppercase tracking-wider transition-all">
+                    <TabsTrigger value="manual" className="flex-1 rounded data-[state=active]:bg-accent data-[state=active]:text-white text-xs font-semibold uppercase tracking-wider transition-all">
                         <Plus className="w-4 h-4 mr-2" /> Manual Batch
                     </TabsTrigger>
-                    <TabsTrigger value="upload" className="flex-1 rounded data-[state=active]:bg-[#174271] data-[state=active]:text-white text-xs font-semibold uppercase tracking-wider transition-all">
+                    <TabsTrigger value="upload" className="flex-1 rounded data-[state=active]:bg-accent data-[state=active]:text-white text-xs font-semibold uppercase tracking-wider transition-all">
                         <FileUp className="w-4 h-4 mr-2" /> CSV Upload
                     </TabsTrigger>
-                    <TabsTrigger value="payments" className="flex-1 rounded data-[state=active]:bg-[#174271] data-[state=active]:text-white text-xs font-semibold uppercase tracking-wider transition-all">
+                    <TabsTrigger value="payments" className="flex-1 rounded data-[state=active]:bg-accent data-[state=active]:text-white text-xs font-semibold uppercase tracking-wider transition-all">
                         <History className="w-4 h-4 mr-2" /> Payment Trails
                     </TabsTrigger>
                 </TabsList>
@@ -224,18 +224,17 @@ export default function ExistingLoansOnboardingPage() {
                                                 <TableCell className="text-right font-medium text-emerald-600 font-mono">KES {Number(loan.total_amount_paid).toLocaleString()}</TableCell>
                                                 <TableCell className="text-right font-semibold text-[#174271] font-mono">KES {Number(loan.outstanding_balance).toLocaleString()}</TableCell>
                                                 <TableCell className="text-center">
-                                                    <span className={`px-3 py-1 rounded text-[10px] font-semibold uppercase tracking-widest ${
-                                                        loan.status === 'active' ? 'bg-emerald-50 text-emerald-600' : 
-                                                        loan.status === 'closed' ? 'bg-blue-50 text-blue-600' : 'bg-red-50 text-red-600'
-                                                    }`}>
+                                                    <span className={`px-3 py-1 rounded text-[10px] font-semibold uppercase tracking-widest ${loan.status === 'active' ? 'bg-emerald-50 text-emerald-600' :
+                                                            loan.status === 'closed' ? 'bg-blue-50 text-blue-600' : 'bg-red-50 text-red-600'
+                                                        }`}>
                                                         {loan.status}
                                                     </span>
                                                 </TableCell>
                                                 <TableCell className="text-right pr-8">
                                                     <div className="flex justify-end gap-2">
-                                                        <Button 
-                                                            size="icon" 
-                                                            variant="ghost" 
+                                                        <Button
+                                                            size="icon"
+                                                            variant="ghost"
                                                             onClick={() => handlePay(loan)}
                                                             className="h-8 w-8 text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 rounded"
                                                             title="Record Payment"
@@ -243,9 +242,9 @@ export default function ExistingLoansOnboardingPage() {
                                                             <Banknote className="w-4 h-4" />
                                                         </Button>
                                                         <Link href={`/sacco-admin/onboarding/existing-loans/${loan.reference}`}>
-                                                            <Button 
-                                                                size="icon" 
-                                                                variant="ghost" 
+                                                            <Button
+                                                                size="icon"
+                                                                variant="ghost"
                                                                 className="h-8 w-8 text-[#174271] hover:text-[#12355a] hover:bg-blue-50 rounded"
                                                                 title="View Details"
                                                             >
@@ -339,14 +338,14 @@ export default function ExistingLoansOnboardingPage() {
             </Tabs>
 
             {/* Modals */}
-            <CreateExistingLoan 
-                isOpen={isIndividualModalOpen} 
-                onClose={() => { setIsIndividualModalOpen(false); refetchLoans(); }} 
+            <CreateExistingLoan
+                isOpen={isIndividualModalOpen}
+                onClose={() => { setIsIndividualModalOpen(false); refetchLoans(); }}
             />
-            
-            <CreateExistingLoanPayment 
-                isOpen={isPaymentModalOpen} 
-                onClose={() => { setIsPaymentModalOpen(false); refetchPayments(); refetchLoans(); }} 
+
+            <CreateExistingLoanPayment
+                isOpen={isPaymentModalOpen}
+                onClose={() => { setIsPaymentModalOpen(false); refetchPayments(); refetchLoans(); }}
                 initialLoanAcc={selectedLoanAcc}
             />
         </div>

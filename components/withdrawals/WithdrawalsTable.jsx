@@ -261,7 +261,7 @@ function WithdrawalsTable({ withdrawals, refetchWithdrawals }) {
         <div className="overflow-x-auto">
           <Table>
             <TableHeader>
-              <TableRow className="bg-[#174271] hover:bg-[#12355a]">
+              <TableRow className="bg-accent hover:bg-[#12355a]">
                 <TableHead className="text-white font-semibold">Date</TableHead>
                 <TableHead className="text-white font-semibold">
                   Amount
@@ -301,15 +301,15 @@ function WithdrawalsTable({ withdrawals, refetchWithdrawals }) {
                   <TableCell className="text-sm">
                     <span
                       className={`px-2 py-0.5 font-bold uppercase tracking-wider text-[10px] rounded border ${withdrawal.transaction_status === "Completed"
-                          ? "bg-emerald-50 text-emerald-700 border-emerald-100/50"
-                          : withdrawal.transaction_status === "Processing" ||
-                            withdrawal.transaction_status === "Pending"
-                            ? "bg-amber-50 text-amber-700 border-amber-100/50"
-                            : withdrawal.transaction_status === "Approved"
-                              ? "bg-emerald-100 text-emerald-800 border-emerald-200"
-                              : withdrawal.transaction_status === "Rejected"
-                                ? "bg-slate-50 text-slate-700 border-slate-200"
-                                : "bg-slate-50 text-slate-600 border-slate-100"
+                        ? "bg-emerald-50 text-emerald-700 border-emerald-100/50"
+                        : withdrawal.transaction_status === "Processing" ||
+                          withdrawal.transaction_status === "Pending"
+                          ? "bg-amber-50 text-amber-700 border-amber-100/50"
+                          : withdrawal.transaction_status === "Approved"
+                            ? "bg-emerald-100 text-emerald-800 border-emerald-200"
+                            : withdrawal.transaction_status === "Rejected"
+                              ? "bg-slate-50 text-slate-700 border-slate-200"
+                              : "bg-slate-50 text-slate-600 border-slate-100"
                         }`}
                     >
                       {withdrawal.transaction_status}
@@ -318,7 +318,7 @@ function WithdrawalsTable({ withdrawals, refetchWithdrawals }) {
                   <TableCell className="text-sm text-center">
                     <Button
                       size="sm"
-                      className="bg-[#174271] hover:bg-[#12355a] text-white rounded text-[12px] font-bold h-8"
+                      className="bg-accent hover:bg-[#12355a] text-white rounded text-[12px] font-bold h-8"
                       onClick={() => handleView(withdrawal)}
                     >
                       View
@@ -405,17 +405,17 @@ function WithdrawalsTable({ withdrawals, refetchWithdrawals }) {
                 <p className="text-sm">
                   <span
                     className={`px-2 py-0.5 font-bold uppercase tracking-wider text-[10px] rounded border ${selectedWithdrawal.transaction_status === "Completed"
-                        ? "bg-emerald-50 text-emerald-700 border-emerald-100/50"
-                        : selectedWithdrawal.transaction_status ===
-                          "Processing" ||
-                          selectedWithdrawal.transaction_status === "Pending"
-                          ? "bg-amber-50 text-amber-700 border-amber-100/50"
-                          : selectedWithdrawal.transaction_status === "Approved"
-                            ? "bg-emerald-100 text-emerald-800 border-emerald-200"
-                            : selectedWithdrawal.transaction_status ===
-                              "Rejected"
-                              ? "bg-slate-50 text-slate-700 border-slate-200"
-                              : "bg-slate-50 text-slate-600 border-slate-100"
+                      ? "bg-emerald-50 text-emerald-700 border-emerald-100/50"
+                      : selectedWithdrawal.transaction_status ===
+                        "Processing" ||
+                        selectedWithdrawal.transaction_status === "Pending"
+                        ? "bg-amber-50 text-amber-700 border-amber-100/50"
+                        : selectedWithdrawal.transaction_status === "Approved"
+                          ? "bg-emerald-100 text-emerald-800 border-emerald-200"
+                          : selectedWithdrawal.transaction_status ===
+                            "Rejected"
+                            ? "bg-slate-50 text-slate-700 border-slate-200"
+                            : "bg-slate-50 text-slate-600 border-slate-100"
                       }`}
                   >
                     {selectedWithdrawal.transaction_status}
@@ -482,8 +482,8 @@ function WithdrawalsTable({ withdrawals, refetchWithdrawals }) {
                 onClick={() => handlePageChange(page)}
                 variant={currentPage === page ? "default" : "outline"}
                 className={`${currentPage === page
-                    ? "bg-[#ea1315] text-white"
-                    : "border-[#ea1315]  hover:bg-[#ea1315] hover:text-white"
+                  ? "bg-[#ea1315] text-white"
+                  : "border-[#ea1315]  hover:bg-[#ea1315] hover:text-white"
                   } text-sm`}
               >
                 {page}

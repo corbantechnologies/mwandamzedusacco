@@ -134,31 +134,31 @@ export default function SetupPage() {
                         Centralize management of your financial foundation and products.
                     </p>
                 </div>
-                
+
                 <Popover>
                     <PopoverTrigger asChild>
-                        <Button className="bg-[#174271] hover:bg-slate-800 text-white gap-2 font-bold shadow-sm rounded">
-                             <Plus className="w-4 h-4" /> Quick Create
+                        <Button className="bg-accent hover:bg-slate-800 text-white gap-2 font-bold shadow-sm rounded">
+                            <Plus className="w-4 h-4" /> Quick Create
                         </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-56 p-1 rounded shadow-xl border-slate-200" align="end">
-                         <div className="grid gap-0.5">
-                             <Button variant="ghost" className="justify-start text-xs h-9 font-semibold text-slate-700 hover:text-[#174271] hover:bg-slate-50" onClick={() => setIsCreateGLModalOpen(true)}>
-                                 <Building2 className="w-4 h-4 mr-2 opacity-70" /> GL Account
-                             </Button>
-                             <Button variant="ghost" className="justify-start text-xs h-9 font-semibold text-slate-700 hover:text-[#174271] hover:bg-slate-50" onClick={() => setIsCreatePaymentModalOpen(true)}>
-                                 <Wallet className="w-4 h-4 mr-2 opacity-70" /> Payment Account
-                             </Button>
-                             <Button variant="ghost" className="justify-start text-xs h-9 font-semibold text-slate-700 hover:text-[#174271] hover:bg-slate-50" onClick={() => setIsCreateFeeModalOpen(true)} disabled={!mandatorySetupDone}>
-                                 <BadgePercent className="w-4 h-4 mr-2 opacity-70" /> Fee Type
-                             </Button>
-                             <Button variant="ghost" className="justify-start text-xs h-9 font-semibold text-slate-700 hover:text-[#174271] hover:bg-slate-50" onClick={() => setIsCreateSavingModalOpen(true)} disabled={!mandatorySetupDone}>
-                                 <PiggyBank className="w-4 h-4 mr-2 opacity-70" /> Saving Type
-                             </Button>
-                             <Button variant="ghost" className="justify-start text-xs h-9 font-semibold text-slate-700 hover:text-[#174271] hover:bg-slate-50" onClick={() => setIsCreateLoanModalOpen(true)} disabled={!mandatorySetupDone}>
-                                 <HandCoins className="w-4 h-4 mr-2 opacity-70" /> Loan Product
-                             </Button>
-                         </div>
+                        <div className="grid gap-0.5">
+                            <Button variant="ghost" className="justify-start text-xs h-9 font-semibold text-slate-700 hover:text-[#174271] hover:bg-slate-50" onClick={() => setIsCreateGLModalOpen(true)}>
+                                <Building2 className="w-4 h-4 mr-2 opacity-70" /> GL Account
+                            </Button>
+                            <Button variant="ghost" className="justify-start text-xs h-9 font-semibold text-slate-700 hover:text-[#174271] hover:bg-slate-50" onClick={() => setIsCreatePaymentModalOpen(true)}>
+                                <Wallet className="w-4 h-4 mr-2 opacity-70" /> Payment Account
+                            </Button>
+                            <Button variant="ghost" className="justify-start text-xs h-9 font-semibold text-slate-700 hover:text-[#174271] hover:bg-slate-50" onClick={() => setIsCreateFeeModalOpen(true)} disabled={!mandatorySetupDone}>
+                                <BadgePercent className="w-4 h-4 mr-2 opacity-70" /> Fee Type
+                            </Button>
+                            <Button variant="ghost" className="justify-start text-xs h-9 font-semibold text-slate-700 hover:text-[#174271] hover:bg-slate-50" onClick={() => setIsCreateSavingModalOpen(true)} disabled={!mandatorySetupDone}>
+                                <PiggyBank className="w-4 h-4 mr-2 opacity-70" /> Saving Type
+                            </Button>
+                            <Button variant="ghost" className="justify-start text-xs h-9 font-semibold text-slate-700 hover:text-[#174271] hover:bg-slate-50" onClick={() => setIsCreateLoanModalOpen(true)} disabled={!mandatorySetupDone}>
+                                <HandCoins className="w-4 h-4 mr-2 opacity-70" /> Loan Product
+                            </Button>
+                        </div>
                     </PopoverContent>
                 </Popover>
             </div>

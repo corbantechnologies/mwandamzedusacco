@@ -72,7 +72,7 @@ export default function SavingTypesSetupPage() {
                 <div className="flex gap-2">
                     <Button
                         onClick={() => setIsCreateModalOpen(true)}
-                        className="bg-[#174271] hover:bg-[#12345a] text-white text-xs  shadow-sm rounded"
+                        className="bg-accent hover:bg-[#12345a] text-white text-xs  shadow-sm rounded"
                     >
                         <Plus className="w-4 h-4 mr-1.5" /> Define New Product
                     </Button>

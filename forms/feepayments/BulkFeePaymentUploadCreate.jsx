@@ -90,7 +90,7 @@ function BulkFeePaymentUpload({ onBatchSuccess }) {
                         variant="outline"
                         size="sm"
                         onClick={handleDownloadTemplate}
-                        className="border-[#174271] text-[#174271] hover:bg-[#174271] hover:text-white"
+                        className="border-[#174271] text-[#174271] hover:bg-accent hover:text-white"
                     >
                         Download Template
                     </Button>
@@ -99,11 +99,10 @@ function BulkFeePaymentUpload({ onBatchSuccess }) {
 
             <form onSubmit={handleSubmit} className="space-y-6">
                 <div
-                    className={`border-2 border-dashed rounded p-12 flex flex-col items-center justify-center text-center transition-all cursor-pointer ${
-                        file
+                    className={`border-2 border-dashed rounded p-12 flex flex-col items-center justify-center text-center transition-all cursor-pointer ${file
                             ? "border-green-500 bg-green-50/50"
                             : "border-slate-200 bg-slate-50/30 hover:border-[#174271] hover:bg-slate-50"
-                    }`}
+                        }`}
                     onClick={() => !file && fileInputRef.current?.click()}
                 >
                     <Input
@@ -144,7 +143,7 @@ function BulkFeePaymentUpload({ onBatchSuccess }) {
                             </div>
                             <div className="space-y-1">
                                 <p className="font-bold text-lg text-slate-800">
-                                    Click to browse 
+                                    Click to browse
                                 </p>
                                 <p className="text-sm text-slate-500">Only CSV files are supported for bulk processing</p>
                             </div>
@@ -155,7 +154,7 @@ function BulkFeePaymentUpload({ onBatchSuccess }) {
                 <div className="flex justify-center">
                     <Button
                         type="submit"
-                        className="bg-[#174271] hover:bg-[#12345a] text-white px-12 h-12 rounded font-bold shadow-lg shadow-[#174271]/20 transition-all active:scale-95 disabled:opacity-50"
+                        className="bg-accent hover:bg-[#12345a] text-white px-12 h-12 rounded font-bold shadow-lg shadow-[#174271]/20 transition-all active:scale-95 disabled:opacity-50"
                         disabled={loading || !file}
                     >
                         {loading ? "Uploading Data..." : "Start Import"}

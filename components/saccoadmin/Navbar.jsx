@@ -10,6 +10,15 @@ const MENU_LINKS = [
   { label: "Dashboard", href: "/sacco-admin/dashboard" },
 
   {
+    label: "Setup & Configuration",
+    href: "/sacco-admin/setup",
+    children: [
+      { label: "Platform Setup", href: "/sacco-admin/setup" },
+      { label: "General Settings", href: "/sacco-admin/settings" },
+    ],
+  },
+
+  {
     label: "Members",
     href: "/sacco-admin/members",
     children: [
@@ -53,15 +62,6 @@ const MENU_LINKS = [
   {
     label: "Reports",
     href: "/sacco-admin/reports",
-  },
-
-  {
-    label: "Setup & Configuration",
-    href: "/sacco-admin/setup",
-    children: [
-      { label: "Platform Setup", href: "/sacco-admin/setup" },
-      { label: "General Settings", href: "/sacco-admin/settings" },
-    ],
   },
 
   {
@@ -127,7 +127,7 @@ export default function SaccoAdminNavbar() {
   return (
     <>
       {/* Top Navbar */}
-      <header className="bg-[#174271] text-white sticky top-0 z-50 shadow">
+      <header className="bg-accent text-white sticky top-0 z-50 shadow">
         <div className="mx-auto px-6 py-4 flex justify-between items-center">
           <Link href="/sacco-admin/dashboard" className="flex items-center gap-2">
             <span className="text-xl md:text-2xl font-bold tracking-tight">

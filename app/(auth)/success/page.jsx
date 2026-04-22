@@ -63,7 +63,7 @@ function SuccessPage() {
             <div className="pt-6 border-t border-gray-100 w-full">
               <div className="flex justify-center items-center gap-2 grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-300">
                 <Image
-                  src="/sproutLarge.png"
+                  src="/mzeduLogo-noBg.png"
                   width={40}
                   height={40}
                   alt="Mwanda Mzedu Sacco Logo"

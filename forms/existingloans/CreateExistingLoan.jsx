@@ -38,7 +38,7 @@ export default function CreateExistingLoan({ isOpen, onClose }) {
             onClose={onClose}
             title="Onboard Existing Loan"
             description="Manually add a single loan from a legacy system."
-            maxWidth="max-w-lg" 
+            maxWidth="max-w-lg"
         >
             <Formik
                 initialValues={{
@@ -166,7 +166,7 @@ export default function CreateExistingLoan({ isOpen, onClose }) {
                                 <Button
                                     type="submit"
                                     disabled={isSubmitting || isCreating}
-                                    className="bg-[#174271] hover:bg-[#12355a] text-white font-semibold px-8 h-10 shadow-sm rounded"
+                                    className="bg-accent hover:bg-[#12355a] text-white font-semibold px-8 h-10 shadow-sm rounded"
                                 >
                                     {isSubmitting || isCreating ? "Saving..." : "Onboard Loan"}
                                 </Button>
