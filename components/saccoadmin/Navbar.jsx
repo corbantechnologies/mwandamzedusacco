@@ -10,6 +10,15 @@ const MENU_LINKS = [
   { label: "Dashboard", href: "/sacco-admin/dashboard" },
 
   {
+    label: "Setup & Configuration",
+    href: "/sacco-admin/setup",
+    children: [
+      { label: "Platform Setup", href: "/sacco-admin/setup" },
+      { label: "General Settings", href: "/sacco-admin/settings" },
+    ],
+  },
+
+  {
     label: "Members",
     href: "/sacco-admin/members",
     children: [
@@ -53,15 +62,6 @@ const MENU_LINKS = [
   {
     label: "Reports",
     href: "/sacco-admin/reports",
-  },
-
-  {
-    label: "Setup & Configuration",
-    href: "/sacco-admin/setup",
-    children: [
-      { label: "Platform Setup", href: "/sacco-admin/setup" },
-      { label: "General Settings", href: "/sacco-admin/settings" },
-    ],
   },
 
   {
