@@ -24,9 +24,9 @@ function BulkFeePaymentCreate({ onBatchSuccess }) {
     }, [feeAccounts]);
 
     const emptyPayment = {
-        fee_account: "", 
+        fee_account: "",
         amount: "",
-        payment_method: "", 
+        payment_method: "",
         transaction_status: "Completed",
     };
 
@@ -88,10 +88,10 @@ function BulkFeePaymentCreate({ onBatchSuccess }) {
                     <h2 className="text-xl font-bold text-slate-900">Manual Collection Batch</h2>
                     <p className="text-sm text-slate-500">Record multiple member fee payments across different categories.</p>
                 </div>
-                <Button 
-                    variant="outline" 
+                <Button
+                    variant="outline"
                     type="button"
-                    onClick={() => setPayments([{ ...emptyPayment }])} 
+                    onClick={() => setPayments([{ ...emptyPayment }])}
                     className="text-xs h-8"
                 >
                     Clear All
@@ -107,10 +107,10 @@ function BulkFeePaymentCreate({ onBatchSuccess }) {
                                     Collection Entry #{index + 1}
                                 </span>
                                 {payments.length > 1 && (
-                                    <Button 
-                                        type="button" 
-                                        onClick={() => removePayment(index)} 
-                                        variant="ghost" 
+                                    <Button
+                                        type="button"
+                                        onClick={() => removePayment(index)}
+                                        variant="ghost"
                                         className="text-red-400 hover:text-red-600 p-1 h-auto opacity-0 group-hover:opacity-100 transition-opacity"
                                     >
                                         <Trash2 className="w-4 h-4" />
@@ -167,10 +167,10 @@ function BulkFeePaymentCreate({ onBatchSuccess }) {
                     ))}
 
                     {payments.length < 15 && (
-                        <Button 
-                            type="button" 
-                            variant="outline" 
-                            onClick={addPayment} 
+                        <Button
+                            type="button"
+                            variant="outline"
+                            onClick={addPayment}
                             className="w-full border-dashed border-2 border-slate-200 text-slate-400 hover:text-[#174271] hover:border-[#174271] hover:bg-slate-50 flex items-center justify-center gap-2 py-4 text-xs font-bold"
                         >
                             <Plus className="w-4 h-4" /> Add Another Entry
@@ -179,9 +179,9 @@ function BulkFeePaymentCreate({ onBatchSuccess }) {
                 </div>
 
                 <div className="flex justify-end pt-4">
-                    <Button 
-                        type="submit" 
-                        className="bg-[#174271] hover:bg-[#12345a] text-white px-8 h-10 flex items-center gap-2 font-bold"
+                    <Button
+                        type="submit"
+                        className="bg-accent hover:bg-[#12345a] text-white px-8 h-10 flex items-center gap-2 font-bold"
                         disabled={loading}
                     >
                         {loading ? "Processing..." : <><Save className="w-4 h-4" /> Save Batch</>}

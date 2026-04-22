@@ -70,7 +70,7 @@ export default function PaymentAccountsSetupPage() {
                 <div className="flex gap-2">
                     <Button
                         onClick={() => setIsCreateModalOpen(true)}
-                        className="bg-[#174271] hover:bg-[#12345a] text-white text-xs font-bold shadow-sm"
+                        className="bg-accent hover:bg-[#12345a] text-white text-xs font-bold shadow-sm"
                     >
                         <Plus className="w-4 h-4 mr-1" /> Add Payment Account
                     </Button>

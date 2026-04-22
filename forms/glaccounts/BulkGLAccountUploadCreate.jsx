@@ -90,7 +90,7 @@ function BulkGLAccountUpload({ onBatchSuccess }) {
                         variant="outline"
                         size="sm"
                         onClick={handleDownloadTemplate}
-                        className="border-[#174271] text-[#174271] hover:bg-[#174271] hover:text-white"
+                        className="border-[#174271] text-[#174271] hover:bg-accent hover:text-white"
                     >
                         Download Template
                     </Button>
@@ -143,7 +143,7 @@ function BulkGLAccountUpload({ onBatchSuccess }) {
                             </div>
                             <div className="space-y-1">
                                 <p className="font-bold text-lg text-slate-800">
-                                    Click to browse 
+                                    Click to browse
                                 </p>
                                 <p className="text-sm text-slate-500">Only CSV files are supported for bulk processing</p>
                             </div>
@@ -154,7 +154,7 @@ function BulkGLAccountUpload({ onBatchSuccess }) {
                 <div className="flex justify-center">
                     <Button
                         type="submit"
-                        className="bg-[#174271] hover:bg-[#12345a] text-white px-12 h-12 rounded font-bold shadow-lg shadow-[#174271]/20 transition-all active:scale-95 disabled:opacity-50"
+                        className="bg-accent hover:bg-[#12345a] text-white px-12 h-12 rounded font-bold shadow-lg shadow-[#174271]/20 transition-all active:scale-95 disabled:opacity-50"
                         disabled={loading || !file}
                     >
                         {loading ? "Uploading Data..." : "Start Import"}

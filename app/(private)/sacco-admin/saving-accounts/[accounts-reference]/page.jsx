@@ -6,12 +6,12 @@ import { useFetchSavingDetail } from "@/hooks/savings/actions";
 import LoadingSpinner from "@/components/general/LoadingSpinner";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { 
-    ArrowLeft, 
-    PiggyBank, 
-    Calendar, 
-    User, 
-    CreditCard, 
+import {
+    ArrowLeft,
+    PiggyBank,
+    Calendar,
+    User,
+    CreditCard,
     Activity,
     ArrowDownLeft,
     FileText,
@@ -31,7 +31,7 @@ export default function SavingAccountReferencePage() {
     const params = useParams();
     const router = useRouter();
     const reference = params?.["accounts-reference"];
-    
+
     const { data: account, isLoading } = useFetchSavingDetail(reference);
 
     if (isLoading) return <LoadingSpinner />;
@@ -241,7 +241,7 @@ export default function SavingAccountReferencePage() {
                     </CardContent>
                 </Card>
 
-                <Card className="border-none shadow-sm bg-[#174271] text-white">
+                <Card className="border-none shadow-sm bg-accent text-white">
                     <CardHeader className="px-6 py-4 border-white/10 border-b">
                         <CardTitle className="text-sm font-bold flex items-center gap-2">
                             <CreditCard className="w-4 h-4 text-white/60" /> Account Settings

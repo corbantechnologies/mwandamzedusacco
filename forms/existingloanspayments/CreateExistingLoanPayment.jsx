@@ -146,7 +146,7 @@ export default function CreateExistingLoanPayment({ isOpen, onClose, initialLoan
                             <Button
                                 type="submit"
                                 disabled={isSubmitting || isCreating}
-                                className="bg-[#174271] hover:bg-[#12355a] text-white font-semibold px-10 h-10 flex items-center gap-2 shadow-sm rounded"
+                                className="bg-accent hover:bg-[#12355a] text-white font-semibold px-10 h-10 flex items-center gap-2 shadow-sm rounded"
                             >
                                 {isSubmitting || isCreating ? (
                                     <>

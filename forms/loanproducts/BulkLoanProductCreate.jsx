@@ -240,7 +240,7 @@ function BulkLoanProductCreate({ onBatchSuccess }) {
                 <div className="flex justify-end pt-4">
                     <Button
                         type="submit"
-                        className="bg-[#174271] hover:bg-slate-800 text-white px-16 h-14 flex items-center gap-2 font-semibold rounded shadow-xl shadow-slate-200 text-lg uppercase tracking-tight"
+                        className="bg-accent hover:bg-slate-800 text-white px-16 h-14 flex items-center gap-2 font-semibold rounded shadow-xl shadow-slate-200 text-lg uppercase tracking-tight"
                         disabled={loading || isLoadingGL}
                     >
                         {loading ? "Registering Batch..." : <><Save className="w-5 h-5 mr-1" /> Commit Schemes</>}

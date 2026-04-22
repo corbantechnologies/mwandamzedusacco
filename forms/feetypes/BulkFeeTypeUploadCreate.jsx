@@ -90,7 +90,7 @@ function BulkFeeTypeUpload({ onBatchSuccess }) {
                     variant="default"
                     size="sm"
                     onClick={handleDownloadTemplate}
-                    className="bg-[#174271] hover:bg-slate-800 text-white font-bold px-6 h-10 shadow-md shadow-slate-200"
+                    className="bg-accent hover:bg-slate-800 text-white font-bold px-6 h-10 shadow-md shadow-slate-200"
                 >
                     Get CSV Template
                 </Button>

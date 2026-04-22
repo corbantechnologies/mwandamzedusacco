@@ -88,7 +88,7 @@ function BulkLoanProductUpload({ onBatchSuccess }) {
                     variant="outline"
                     size="lg"
                     onClick={handleDownloadTemplate}
-                    className="border-2 border-[#174271] text-[#174271] hover:bg-[#174271] hover:text-white font-semibold px-8 rounded transition-all shadow-md group h-12"
+                    className="border-2 border-[#174271] text-[#174271] hover:bg-accent hover:text-white font-semibold px-8 rounded transition-all shadow-md group h-12"
                 >
                     Download Template
                 </Button>
@@ -97,7 +97,7 @@ function BulkLoanProductUpload({ onBatchSuccess }) {
             <form onSubmit={handleSubmit} className="space-y-6">
                 <div
                     className={`border-2 border-dashed rounded p-20 flex flex-col items-center justify-center text-center transition-all cursor-pointer ${file
-                        ? "border-[#174271] bg-[#174271]/5 shadow-inner"
+                        ? "border-[#174271] bg-accent/5 shadow-inner"
                         : "border-slate-200 bg-white hover:border-[#174271] hover:bg-slate-50 shadow-sm"
                         }`}
                     onClick={() => !file && fileInputRef.current?.click()}
@@ -112,7 +112,7 @@ function BulkLoanProductUpload({ onBatchSuccess }) {
 
                     {file ? (
                         <div className="flex flex-col items-center space-y-6 animate-in zoom-in-95 duration-500">
-                            <div className="p-6 bg-[#174271] rounded text-white shadow-2xl shadow-slate-200 ring-8 ring-white">
+                            <div className="p-6 bg-accent rounded text-white shadow-2xl shadow-slate-200 ring-8 ring-white">
                                 <FileCheck className="w-12 h-12" />
                             </div>
                             <div className="space-y-1">
@@ -154,7 +154,7 @@ function BulkLoanProductUpload({ onBatchSuccess }) {
                 <div className="flex justify-center pt-4">
                     <Button
                         type="submit"
-                        className="bg-[#174271] hover:bg-slate-800 text-white px-24 h-16 rounded font-semibold text-xl shadow-2xl shadow-slate-200 transition-all active:scale-95 disabled:opacity-20 flex items-center gap-4 uppercase tracking-tighter"
+                        className="bg-accent hover:bg-slate-800 text-white px-24 h-16 rounded font-semibold text-xl shadow-2xl shadow-slate-200 transition-all active:scale-95 disabled:opacity-20 flex items-center gap-4 uppercase tracking-tighter"
                         disabled={loading || !file}
                     >
                         {loading ? "Synchronizing Data..." : "Engage Bulk Upload"}

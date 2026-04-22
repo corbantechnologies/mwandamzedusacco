@@ -187,7 +187,7 @@ function BulkGLAccountCreate({ onBatchSuccess }) {
                 <div className="flex justify-end pt-4">
                     <Button
                         type="submit"
-                        className="bg-[#174271] hover:bg-[#12345a] text-white px-8 h-10 flex items-center gap-2 font-bold"
+                        className="bg-accent hover:bg-[#12345a] text-white px-8 h-10 flex items-center gap-2 font-bold"
                         disabled={loading}
                     >
                         {loading ? "Processing..." : <><Save className="w-4 h-4" /> Save Batch</>}

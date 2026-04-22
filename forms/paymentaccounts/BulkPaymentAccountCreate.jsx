@@ -165,7 +165,7 @@ function BulkPaymentAccountCreate({ onBatchSuccess }) {
                 <div className="flex justify-end pt-4">
                     <Button
                         type="submit"
-                        className="bg-[#174271] hover:bg-[#12345a] text-white px-10 h-10 flex items-center gap-2 font-bold shadow-md shadow-slate-200"
+                        className="bg-accent hover:bg-[#12345a] text-white px-10 h-10 flex items-center gap-2 font-bold shadow-md shadow-slate-200"
                         disabled={loading || isLoadingGL}
                     >
                         {loading ? "Processing..." : <><Save className="w-4 h-4" /> Save Batch</>}

@@ -82,7 +82,7 @@ export default function LoansManagementPage() {
 
             {/* Stats Overview */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <Card className="border shadow-sm bg-[#174271] text-white rounded-xl">
+                <Card className="border shadow-sm bg-accent text-white rounded-xl">
                     <CardHeader className="p-6">
                         <CardDescription className="text-white/60 font-bold uppercase tracking-widest text-[10px]">Active Accounts</CardDescription>
                         <CardTitle className="text-3xl font-bold tracking-tight">{loans?.length || 0}</CardTitle>

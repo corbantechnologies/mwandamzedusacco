@@ -45,7 +45,7 @@ export default function BulkCreateExistingLoan({ isOpen, onClose, isInline = fal
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+
         // Basic validation
         const invalidRow = loans.find(l => !l.member || !l.principal || !l.gl_principal_asset);
         if (invalidRow) {
@@ -202,7 +202,7 @@ export default function BulkCreateExistingLoan({ isOpen, onClose, isInline = fal
                 <Button
                     type="submit"
                     disabled={isCreating}
-                    className="bg-[#174271] hover:bg-[#12355a] text-white font-semibold px-12 h-12 flex items-center gap-2 shadow-sm rounded transition-all"
+                    className="bg-accent hover:bg-[#12355a] text-white font-semibold px-12 h-12 flex items-center gap-2 shadow-sm rounded transition-all"
                 >
                     {isCreating ? (
                         <>

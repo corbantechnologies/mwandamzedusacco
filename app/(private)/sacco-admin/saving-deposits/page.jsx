@@ -35,12 +35,12 @@ import BulkSavingDepositUploadCreate from "@/forms/savingsdeposits/BulkSavingDep
 export default function SavingDepositsPage() {
     const router = useRouter();
     const [page, setPage] = useState(1);
-    const { 
-        data: savingsData, 
-        isLoading, 
-        refetch 
+    const {
+        data: savingsData,
+        isLoading,
+        refetch
     } = useFetchSavings({ page });
-    
+
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
     const [selectedAccount, setSelectedAccount] = useState(null);
 
@@ -76,7 +76,7 @@ export default function SavingDepositsPage() {
                 <div className="flex gap-2">
                     <Button
                         onClick={() => setIsCreateModalOpen(true)}
-                        className="bg-[#174271] hover:bg-[#12345a] text-white text-xs font-bold px-6 h-10 shadow-lg shadow-blue-100"
+                        className="bg-accent hover:bg-[#12345a] text-white text-xs font-bold px-6 h-10 shadow-lg shadow-blue-100"
                     >
                         <Plus className="w-4 h-4 mr-1" /> Single Deposit
                     </Button>
@@ -199,7 +199,7 @@ export default function SavingDepositsPage() {
                                     </TableBody>
                                 </Table>
                             </div>
-                            
+
                             {/* Pagination */}
                             {totalPages > 1 && (
                                 <div className="flex items-center justify-between px-6 py-4 bg-slate-50/50 border-t">
@@ -261,9 +261,9 @@ export default function SavingDepositsPage() {
                 refetchMember={refetch}
                 // If an account is selected, pass it as the single option or part of options
                 // The form expects an array of accounts
-                accounts={savings} 
-                // We might want to pre-select if selectedAccount is set, 
-                // but the formik initial values would need to handle that inside CreateDepositAdmin.
+                accounts={savings}
+            // We might want to pre-select if selectedAccount is set, 
+            // but the formik initial values would need to handle that inside CreateDepositAdmin.
             />
         </div>
     );

@@ -71,7 +71,7 @@ export default function LoanProductsSetupPage() {
                 <div className="flex gap-2">
                     <Button
                         onClick={() => setIsCreateModalOpen(true)}
-                        className="bg-[#174271] hover:bg-[#12345a] text-white text-xs font-bold shadow-sm rounded h-10 px-5"
+                        className="bg-accent hover:bg-[#12345a] text-white text-xs font-bold shadow-sm rounded h-10 px-5"
                     >
                         <Plus className="w-4 h-4 mr-1.5" /> New Loan Scheme
                     </Button>

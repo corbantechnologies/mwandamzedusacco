@@ -79,7 +79,7 @@ export default function FeePaymentsManagementPage() {
 
             {/* Stats Overview */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <Card className="border shadow-sm bg-[#174271] text-white rounded-lg">
+                <Card className="border shadow-sm bg-accent text-white rounded-lg">
                     <CardHeader className="p-6">
                         <CardDescription className="text-white/60 uppercase tracking-widest text-[9px]">Total Receivables</CardDescription>
                         <CardTitle className="text-3xl font-bold">
