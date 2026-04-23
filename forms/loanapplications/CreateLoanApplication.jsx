@@ -66,7 +66,7 @@ export function CreateLoanApplication({ onSuccess, memberPath }) {
             const errorMessage = Array.isArray(firstError)
               ? firstError[0]
               : firstError;
-            toast.error(`${firstErrorKey.replace(/_/g, " ")}: ${errorMessage}`);
+            toast.error(`${errorMessage}`);
           } else {
             toast.error("Process failed. Please try again.");
           }
