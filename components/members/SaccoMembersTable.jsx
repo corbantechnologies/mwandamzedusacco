@@ -58,47 +58,33 @@ function SaccoMembersTable({ members }) {
       </CardHeader>
       <CardContent>
         {/* Search and Filter Controls */}
-        <div className="flex flex-col sm:flex-row gap-4 mb-6">
-          <div className="flex-1">
-            <Label
-              htmlFor="search"
-              className="text-base text-black font-medium sr-only"
-            >
-              Search Members
-            </Label>
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500" />
-              <Input
-                id="search"
-                placeholder="Search by name..."
-                value={searchTerm}
-                onChange={(e) => {
-                  setSearchTerm(e.target.value);
-                  setCurrentPage(1); // Reset to first page on search
-                }}
-                className="pl-10 border-black   rounded text-base"
-              />
-            </div>
+        <div className="flex flex-col lg:flex-row gap-4 mb-8">
+          <div className="flex-1 relative group">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 group-focus-within:text-primary transition-colors" />
+            <Input
+              id="search"
+              placeholder="Search members by name or number..."
+              value={searchTerm}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+                setCurrentPage(1);
+              }}
+              className="pl-10 border-gray-200 focus:border-primary rounded-xl text-base h-11 transition-all"
+            />
           </div>
-          <div className="w-full sm:w-48">
-            <Label
-              htmlFor="status-filter"
-              className="text-base text-black font-medium sr-only"
-            >
-              Filter by Status
-            </Label>
+          <div className="w-full lg:w-56">
             <select
               id="status-filter"
               value={statusFilter}
               onChange={(e) => {
                 setStatusFilter(e.target.value);
-                setCurrentPage(1); // Reset to first page on filter change
+                setCurrentPage(1);
               }}
-              className="w-full border border-black rounded px-3 py-2 text-base focus:ring-2   transition-colors"
+              className="w-full border border-gray-200 rounded-xl px-4 py-2 text-base focus:ring-2 focus:ring-primary/20 transition-all bg-white h-11 appearance-none cursor-pointer"
             >
               <option value="all">All Statuses</option>
-              <option value="approved">Approved</option>
-              <option value="pending">Pending</option>
+              <option value="approved">Approved Only</option>
+              <option value="pending">Pending Approval</option>
             </select>
           </div>
         </div>
@@ -106,78 +92,72 @@ function SaccoMembersTable({ members }) {
         {/* Table */}
         {filteredMembers.length > 0 ? (
           <>
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className="text-black">Member No</TableHead>
-                    <TableHead className="text-black">Name</TableHead>
-                    <TableHead className="text-black">Status</TableHead>
-                    <TableHead className="text-black">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {paginatedMembers.map((member) => (
-                    <TableRow key={member?.reference}>
-                      <TableCell className="font-medium">
-                        <Link
-                          href={`/sacco-admin/members/${member?.member_no}`}
-                        >
-                          {member?.member_no}
-                        </Link>
-                      </TableCell>
-                      <TableCell>
-                        <Link
-                          href={`/sacco-admin/members/${member?.member_no}`}
-                        >
-                          {member?.first_name} {member?.last_name}
-                        </Link>
-                      </TableCell>
-
-                      <TableCell>
-                        <Badge
-                          variant={
-                            member?.is_approved ? "default" : "secondary"
-                          }
-                          className={
-                            member?.is_approved
-                              ? "bg-primary text-white"
-                              : "bg-gray-200 text-gray-800"
-                          }
-                        >
-                          {member?.is_approved ? (
-                            <CheckCircle className="h-3 w-3 mr-1" />
-                          ) : (
-                            <Clock className="h-3 w-3 mr-1" />
-                          )}
-                          {member?.is_approved ? "Approved" : "Pending"}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <Button
-                          size="sm"
-                          onClick={() => {
-                            router.push(
-                              `/sacco-admin/members/${member?.member_no}`
-                            );
-                          }}
-                          className="bg-[#ea1315] hover:bg-[#c71012] text-white"
-                        >
-                          Manage
-                        </Button>
-                      </TableCell>
+            <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+              <div className="min-w-[600px]">
+                <Table>
+                  <TableHeader className="bg-gray-50/50">
+                    <TableRow className="hover:bg-transparent">
+                      <TableHead className="text-gray-900 font-bold py-4">Member No</TableHead>
+                      <TableHead className="text-gray-900 font-bold py-4">Full Name</TableHead>
+                      <TableHead className="text-gray-900 font-bold py-4">Status</TableHead>
+                      <TableHead className="text-gray-900 font-bold py-4 text-right">Actions</TableHead>
                     </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {paginatedMembers.map((member) => (
+                      <TableRow key={member?.reference}>
+                        <TableCell className="font-medium">
+                          <Link href={`/sacco-admin/members/${member?.member_no}`}>
+                            {member?.member_no}
+                          </Link>
+                        </TableCell>
+                        <TableCell>
+                          <Link href={`/sacco-admin/members/${member?.member_no}`}>
+                            {member?.first_name} {member?.last_name}
+                          </Link>
+                        </TableCell>
+
+                        <TableCell>
+                          <Badge
+                            variant={member?.is_approved ? "default" : "secondary"}
+                            className={
+                              member?.is_approved
+                                ? "bg-primary text-white"
+                                : "bg-gray-200 text-gray-800"
+                            }
+                          >
+                            {member?.is_approved ? (
+                              <CheckCircle className="h-3 w-3 mr-1" />
+                            ) : (
+                              <Clock className="h-3 w-3 mr-1" />
+                            )}
+                            {member?.is_approved ? "Approved" : "Pending"}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <Button
+                            size="sm"
+                            onClick={() => {
+                              router.push(`/sacco-admin/members/${member?.member_no}`);
+                            }}
+                            className="bg-accent hover:bg-accent/90 text-white rounded-lg px-4 h-9"
+                          >
+                            Manage
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
             </div>
 
             {/* Pagination Controls */}
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-6">
               <div className="text-sm text-gray-500">
                 Showing {(currentPage - 1) * itemsPerPage + 1} to{" "}
-                {Math.min(currentPage * itemsPerPage, filteredMembers.length)}{" "}
-                of {filteredMembers.length} members
+                {Math.min(currentPage * itemsPerPage, filteredMembers.length)} of{" "}
+                {filteredMembers.length} members
               </div>
               <div className="flex gap-2">
                 <Button
@@ -189,23 +169,21 @@ function SaccoMembersTable({ members }) {
                 >
                   Previous
                 </Button>
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                  (page) => (
-                    <Button
-                      key={page}
-                      variant={currentPage === page ? "default" : "outline"}
-                      size="sm"
-                      onClick={() => handlePageChange(page)}
-                      className={
-                        currentPage === page
-                          ? "bg-[#ea1315] text-white hover:bg-[#c71012]"
-                          : "border-black text-black hover:bg-gray-100"
-                      }
-                    >
-                      {page}
-                    </Button>
-                  )
-                )}
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                  <Button
+                    key={page}
+                    variant={currentPage === page ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => handlePageChange(page)}
+                    className={
+                      currentPage === page
+                        ? "bg-accent text-white hover:bg-accent/90"
+                        : "border-black text-black hover:bg-gray-100"
+                    }
+                  >
+                    {page}
+                  </Button>
+                ))}
                 <Button
                   variant="outline"
                   size="sm"
@@ -219,7 +197,7 @@ function SaccoMembersTable({ members }) {
             </div>
           </>
         ) : (
-          <p className="text-center text-gray-500">No members found.</p>
+          <p className="text-center text-gray-500 py-12">No members found.</p>
         )}
       </CardContent>
     </Card>

@@ -58,12 +58,12 @@ function MemberDashboard() {
   return (
     <div className="min-h-screen bg-gray-50/50 p-4 md:p-8 space-y-8">
       {/* Header Section */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-slate-900">
+      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+        <div className="space-y-1">
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900">
             Dashboard
           </h1>
-          <p className="text-slate-500 mt-1 text-lg">
+          <p className="text-slate-500 text-base md:text-lg">
             Welcome back,{" "}
             <span className="font-semibold text-[#236c2e]">
               {member?.first_name} {member?.last_name}
@@ -71,16 +71,16 @@ function MemberDashboard() {
             .
           </p>
         </div>
-        <div className="flex items-center gap-2 text-sm text-muted-foreground bg-white px-4 py-2 rounded border shadow-sm">
-          <span>Member No:</span>
-          <span className="font-mono font-bold text-gray-900">
+        <div className="flex items-center gap-3 text-sm text-muted-foreground bg-white px-4 py-2.5 rounded border shadow-sm w-full lg:w-auto justify-between lg:justify-start">
+          <span className="font-medium">Member No:</span>
+          <span className="font-mono font-bold text-gray-900 px-2 py-0.5 bg-gray-50 rounded border">
             {member?.member_no}
           </span>
         </div>
       </div>
 
       {/* Summary Cards Grid */}
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card className="border-l-4 border-l-[#236c2e] hover:shadow-sm transition-shadow">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-xs font-bold uppercase tracking-wider text-slate-500">

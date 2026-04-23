@@ -91,24 +91,24 @@ export default function SaccoAdminDashboard() {
   return (
     <div className="min-h-screen bg-gray-50/50 p-4 md:p-8 space-y-8">
       {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight text-slate-900">
+      <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+        <div className="space-y-1">
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-slate-900">
             Admin Dashboard
           </h1>
-          <p className="text-slate-500 mt-1 text-lg">
+          <p className="text-slate-500 text-base md:text-lg">
             Manage members, products, and configurations.
           </p>
         </div>
-        <div className="bg-white px-4 py-2 rounded border shadow-sm">
-          <p className="text-sm font-medium text-gray-900">
+        <div className="bg-white px-4 py-2.5 rounded border shadow-sm w-full lg:w-auto">
+          <p className="text-sm font-semibold text-gray-900">
             {myself?.salutation} {myself?.last_name} (Admin)
           </p>
         </div>
       </div>
 
       {/* Overview Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         <Card className="border-l-4 border-l-[#174271]">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-xs font-bold uppercase tracking-wider text-slate-500">
@@ -163,19 +163,21 @@ export default function SaccoAdminDashboard() {
 
       {/* Tabs Content */}
       <Tabs defaultValue="members" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 lg:w-[600px] h-auto bg-white border">
-          <TabsTrigger value="members">Members</TabsTrigger>
-          <TabsTrigger value="savings">Saving Types</TabsTrigger>
-          <TabsTrigger value="loans">Loan Products</TabsTrigger>
-          <TabsTrigger value="ventures">Venture Types</TabsTrigger>
-        </TabsList>
+        <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+          <TabsList className="flex w-max md:w-full lg:w-[600px] h-auto bg-white border p-1">
+            <TabsTrigger value="members" className="flex-1 py-2 text-sm md:text-base">Members</TabsTrigger>
+            <TabsTrigger value="savings" className="flex-1 py-2 text-sm md:text-base">Saving Types</TabsTrigger>
+            <TabsTrigger value="loans" className="flex-1 py-2 text-sm md:text-base">Loan Products</TabsTrigger>
+            <TabsTrigger value="ventures" className="flex-1 py-2 text-sm md:text-base">Venture Types</TabsTrigger>
+          </TabsList>
+        </div>
 
         {/* Members Tab */}
         <TabsContent value="members" className="pt-6">
-          <div className="flex justify-end mb-4">
+          <div className="flex flex-col sm:flex-row justify-end mb-6 gap-4">
             <Popover open={memberPopoverOpen} onOpenChange={setMemberPopoverOpen}>
               <PopoverTrigger asChild>
-                <Button className="bg-primary hover:bg-primary/90">
+                <Button className="bg-primary hover:bg-primary/90 w-full sm:w-auto h-11">
                   <Plus className="mr-2 h-4 w-4" /> Add Member <ChevronDown className="ml-2 h-4 w-4" />
                 </Button>
               </PopoverTrigger>
