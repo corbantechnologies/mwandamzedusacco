@@ -16,9 +16,14 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { useFetchDebtors } from "@/hooks/financials/actions";
+import MemberLoadingSpinner from "@/components/general/MemberLoadingSpinner";
 
-export default function DebtorsList({ data }) {
-    if (!data) return null;
+export default function DebtorsList() {
+    const { data, isLoading, error } = useFetchDebtors();
+
+    if (isLoading) return <MemberLoadingSpinner />;
+    if (error || !data) return <div className="p-12 text-center text-muted-foreground">Unable to load Debtors List</div>;
 
     const { debtors, total_outstanding, generated_at } = data;
 
