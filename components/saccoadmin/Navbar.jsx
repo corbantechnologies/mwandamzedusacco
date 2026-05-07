@@ -10,21 +10,10 @@ const MENU_LINKS = [
   { label: "Dashboard", href: "/sacco-admin/dashboard" },
 
   {
-    label: "Setup & Configuration",
-    href: "/sacco-admin/setup",
-    children: [
-      { label: "Platform Setup", href: "/sacco-admin/setup" },
-      { label: "General Settings", href: "/sacco-admin/settings" },
-    ],
-  },
-
-  {
     label: "Members",
     href: "/sacco-admin/members",
     children: [
       { label: "All Members", href: "/sacco-admin/members" },
-      { label: "Personal Profiles", href: "/sacco-admin/personal" },
-      { label: "Guarantor Profiles", href: "/sacco-admin/personal/guarantorprofile" },
     ],
   },
 
@@ -65,6 +54,15 @@ const MENU_LINKS = [
   },
 
   {
+    label: "Setup & Configuration",
+    href: "/sacco-admin/setup",
+    children: [
+      { label: "Platform Setup", href: "/sacco-admin/setup" },
+
+    ],
+  },
+
+  {
     label: "Data Onboarding",
     href: "/sacco-admin/onboarding/existing-loans",
     children: [
@@ -72,6 +70,16 @@ const MENU_LINKS = [
       { label: "Legacy Payments", href: "/sacco-admin/onboarding/existing-loan-payments" },
     ],
   },
+
+  {
+    label: "Personal",
+    href: "/sacco-admin/personal",
+    children: [
+      { label: "Personal Profile", href: "/sacco-admin/personal" },
+      { label: "General Settings", href: "/sacco-admin/settings" },
+      { label: "Guarantor Profile", href: "/sacco-admin/personal/guarantorprofile" },
+    ],
+  }
 ];
 
 const NavItem = ({ link, setIsMenuOpen }) => {
@@ -127,7 +135,7 @@ export default function SaccoAdminNavbar() {
   return (
     <>
       {/* Top Navbar */}
-      <header className="bg-accent text-white sticky top-0 z-50 shadow">
+      <header className="bg-[#045138] text-white sticky top-0 z-50 shadow">
         <div className="mx-auto px-6 py-4 flex justify-between items-center">
           <Link href="/sacco-admin/dashboard" className="flex items-center gap-2">
             <span className="text-xl md:text-2xl font-bold tracking-tight">
