@@ -8,6 +8,7 @@ import React, { useState } from "react";
 
 const MENU_LINKS = [
   { label: "Dashboard", href: "/sacco-admin/dashboard" },
+  { label: "Onboarding", href: "/sacco-admin/onboarding" },
 
   {
     label: "Setup & Configuration",
@@ -65,7 +66,7 @@ const MENU_LINKS = [
   },
 
   {
-    label: "Data Onboarding",
+    label: "Legacy Data",
     href: "/sacco-admin/onboarding/existing-loans",
     children: [
       { label: "Legacy Loans", href: "/sacco-admin/onboarding/existing-loans" },
