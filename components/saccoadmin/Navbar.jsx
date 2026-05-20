@@ -8,6 +8,7 @@ import React, { useState } from "react";
 
 const MENU_LINKS = [
   { label: "Dashboard", href: "/sacco-admin/dashboard" },
+  { label: "Onboarding", href: "/sacco-admin/onboarding" },
 
   {
     label: "Members",
