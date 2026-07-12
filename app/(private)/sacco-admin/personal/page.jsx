@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import MemberLoadingSpinner from "@/components/general/MemberLoadingSpinner";
 import { useFetchMember } from "@/hooks/members/actions";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,6 +18,7 @@ import { useFetchMemberSummary } from "@/hooks/summary/actions";
 import MemberFinancialSummary from "@/components/members/dashboard/MemberFinancialSummary";
 
 function MemberDashboard() {
+  const [summaryYear, setSummaryYear] = useState(new Date().getFullYear());
   const {
     isLoading: isLoadingMember,
     data: member,
@@ -28,7 +29,7 @@ function MemberDashboard() {
     isLoading: isLoadingSummary,
     data: summary,
     refetch: refetchSummary,
-  } = useFetchMemberSummary(member?.member_no);
+  } = useFetchMemberSummary(member?.member_no, summaryYear);
 
 
   if (isLoadingMember || isLoadingSummary) return <MemberLoadingSpinner />;
@@ -198,6 +199,8 @@ function MemberDashboard() {
         <MemberFinancialSummary
           summary={summary}
           memberNo={member?.member_no}
+          summaryYear={summaryYear}
+          setSummaryYear={setSummaryYear}
         />
       </div>
     </div>
