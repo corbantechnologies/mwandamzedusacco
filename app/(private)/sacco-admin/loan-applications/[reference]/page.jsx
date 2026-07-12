@@ -158,7 +158,7 @@ export default function AdminLoanApplicationDetail({ params }) {
             </Button>
             <Button
               size="sm"
-              className="h-8 bg-[#045e32] hover:bg-[#034625]"
+              className="h-8 bg-[#045138] hover:bg-[#034625]"
               onClick={async () => {
                 toast.dismiss(t.id);
                 setIsSubmitting(true);
@@ -201,7 +201,7 @@ export default function AdminLoanApplicationDetail({ params }) {
             </Button>
             <Button
               size="sm"
-              className="h-8 bg-[#045e32] hover:bg-[#034625]"
+              className="h-8 bg-[#045138] hover:bg-[#034625]"
               onClick={async () => {
                 toast.dismiss(t.id);
                 setIsSubmitting(true);
@@ -274,7 +274,37 @@ export default function AdminLoanApplicationDetail({ params }) {
     return application?.projection?.schedule || [];
   }, [application]);
 
-  if (isPending) return <MemberLoadingSpinner />;
+const LoanApplicationDetailSkeleton = () => (
+  <div className="mx-auto p-4 sm:p-6 space-y-6 animate-pulse">
+    <div className="h-4 w-48 bg-slate-200 rounded" />
+    <div className="flex justify-between items-center">
+      <div className="space-y-2">
+        <div className="h-6 w-64 bg-slate-200 rounded" />
+        <div className="h-4 w-40 bg-slate-200 rounded" />
+      </div>
+      <div className="h-10 w-32 bg-slate-200 rounded" />
+    </div>
+    <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+      <div className="lg:col-span-3 space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+          <div className="h-24 bg-slate-200 rounded-lg" />
+          <div className="h-24 bg-slate-200 rounded-lg" />
+          <div className="h-24 bg-slate-200 rounded-lg" />
+        </div>
+        <div className="h-96 bg-slate-200 rounded-lg" />
+      </div>
+      <div className="h-96 bg-slate-200 rounded-lg" />
+    </div>
+  </div>
+);
+
+  if (isPending) {
+    return (
+      <div className="min-h-screen bg-gray-50/50">
+        <LoanApplicationDetailSkeleton />
+      </div>
+    );
+  }
   if (isError || !application)
     return (
       <div className="p-8">
@@ -336,7 +366,7 @@ export default function AdminLoanApplicationDetail({ params }) {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
             <div className="flex items-center gap-3">
-              <h1 className="text-3xl font-bold text-gray-900">
+              <h1 className="text-xl font-semibold text-gray-900">
                 {application.product} Application
               </h1>
             </div>
@@ -374,7 +404,7 @@ export default function AdminLoanApplicationDetail({ params }) {
                     <Button
                       variant="outline"
                       onClick={() => setIsUpdateModalOpen(true)}
-                      className="border-[#045e32] text-[#045e32] hover:bg-[#045e32]/10 w-full sm:w-auto"
+                      className="border-[#045138] text-[#045138] hover:bg-[#045138]/10 w-full sm:w-auto"
                     >
                       <Pencil className="mr-2 h-4 w-4" />
                       Update
@@ -382,7 +412,7 @@ export default function AdminLoanApplicationDetail({ params }) {
                     <Button
                       onClick={handleSubmitForAmendment}
                       disabled={isSubmitting}
-                      className="bg-[#045e32] hover:bg-[#034625] w-full sm:w-auto"
+                      className="bg-[#045138] hover:bg-[#034625] w-full sm:w-auto"
                     >
                       {isSubmitting ? (
                         <Loader2 className="h-4 w-4 mr-2 animate-spin" />
@@ -406,7 +436,7 @@ export default function AdminLoanApplicationDetail({ params }) {
                     <Button
                       onClick={handleAcceptAmendment}
                       disabled={isSubmitting}
-                      className="bg-[#045e32] hover:bg-[#034625] w-full sm:w-auto"
+                      className="bg-[#045138] hover:bg-[#034625] w-full sm:w-auto"
                     >
                       Accept Amendment
                     </Button>
@@ -416,7 +446,7 @@ export default function AdminLoanApplicationDetail({ params }) {
                   <Button
                     onClick={handleSubmitLoanApplication}
                     disabled={isSubmitting}
-                    className="bg-[#045e32] hover:bg-[#034625] w-full sm:w-auto"
+                    className="bg-[#045138] hover:bg-[#034625] w-full sm:w-auto"
                   >
                     {isSubmitting ? (
                       <Loader2 className="h-4 w-4 mr-2 animate-spin" />
@@ -455,7 +485,7 @@ export default function AdminLoanApplicationDetail({ params }) {
                     <Button
                       onClick={handleApprove}
                       disabled={isSubmitting}
-                      className="bg-[#045e32] hover:bg-[#034625] w-full sm:w-auto"
+                      className="bg-[#045138] hover:bg-[#034625] w-full sm:w-auto"
                     >
                       <ThumbsUp className="mr-2 h-4 w-4" />
                       Approve
@@ -501,7 +531,7 @@ export default function AdminLoanApplicationDetail({ params }) {
             {/* Financial Overview */}
             <Card>
               <CardHeader>
-                <CardTitle className="text-[#045e32]">
+                <CardTitle className="text-[#045138]">
                   Application Summary
                 </CardTitle>
               </CardHeader>
@@ -510,7 +540,7 @@ export default function AdminLoanApplicationDetail({ params }) {
                   <p className="text-sm text-muted-foreground">
                     Requested Amount
                   </p>
-                  <p className="text-2xl font-bold text-gray-900">
+                  <p className="text-xl font-semibold text-gray-900">
                     {formatCurrency(application.requested_amount)}
                   </p>
                 </div>
@@ -575,7 +605,9 @@ export default function AdminLoanApplicationDetail({ params }) {
                   Projected Repayment Schedule
                 </CardTitle>
                 <CardDescription>
-                  Estimated breakdown of payments
+                  {application.product_details?.interest_method === "Flat"
+                    ? "Flat-rate: interest is charged on the original principal. Processing fee is spread evenly across all installments. The balance column shows total amount still outstanding."
+                    : "Reducing balance: interest is charged on the remaining principal each period. The balance column shows remaining principal after each payment."}
                 </CardDescription>
               </CardHeader>
               <CardContent className="p-0 sm:p-6">
@@ -585,11 +617,11 @@ export default function AdminLoanApplicationDetail({ params }) {
                       <TableRow className="bg-gray-50/50">
                         <TableHead>Due Date</TableHead>
                         <TableHead>Principal</TableHead>
-                        <TableHead>Interest</TableHead>
-                        <TableHead>Fees</TableHead>
+                        <TableHead>{application.product_details?.interest_method === "Flat" ? "Interest (Flat)" : "Interest (Reducing)"}</TableHead>
+                        <TableHead>Processing Fee</TableHead>
                         <TableHead>Total Due</TableHead>
                         <TableHead>Status</TableHead>
-                        <TableHead className="text-right">Balance</TableHead>
+                        <TableHead className="text-right">{application.product_details?.interest_method === "Flat" ? "Remaining Balance (Total)" : "Remaining Principal"}</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -607,7 +639,7 @@ export default function AdminLoanApplicationDetail({ params }) {
                           <TableCell>
                             {formatCurrency(row.fee_due)}
                           </TableCell>
-                          <TableCell className="font-semibold text-[#045e32]">
+                          <TableCell className="font-semibold text-[#045138]">
                             {formatCurrency(row.total_due)}
                           </TableCell>
                           <TableCell>
@@ -652,7 +684,7 @@ export default function AdminLoanApplicationDetail({ params }) {
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2">
-                  <CheckCircle2 className="h-5 w-5 text-[#045e32]" />
+                  <CheckCircle2 className="h-5 w-5 text-[#045138]" />
                   Coverage Status
                 </CardTitle>
               </CardHeader>
@@ -774,7 +806,7 @@ export default function AdminLoanApplicationDetail({ params }) {
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
             <div className="bg-white rounded shadow-xl w-full max-w-md">
               <div className="flex items-center justify-between p-6 border-b">
-                <h2 className="text-xl font-bold text-gray-900">
+                <h2 className="text-xl font-semibold text-gray-900">
                   Update Application
                 </h2>
                 <Button
@@ -803,7 +835,7 @@ export default function AdminLoanApplicationDetail({ params }) {
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
             <div className="bg-white rounded shadow-xl w-full max-w-md">
               <div className="flex items-center justify-between p-6 border-b">
-                <h2 className="text-xl font-bold text-gray-900">
+                <h2 className="text-xl font-semibold text-gray-900">
                   Update Draft
                 </h2>
                 <Button
@@ -832,7 +864,7 @@ export default function AdminLoanApplicationDetail({ params }) {
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
             <div className="bg-white rounded shadow-xl w-full max-w-md">
               <div className="flex items-center justify-between p-6 border-b">
-                <h2 className="text-xl font-bold text-gray-900">
+                <h2 className="text-xl font-semibold text-gray-900">
                   Finalize Amendment
                 </h2>
                 <Button

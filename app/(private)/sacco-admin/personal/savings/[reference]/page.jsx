@@ -33,6 +33,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import MpesaCreateDepositForm from "@/forms/savingsdeposits/MpesaCreateDepositForm";
 
 function SavingsDetail() {
   const { reference } = useParams();
@@ -40,7 +41,8 @@ function SavingsDetail() {
   const [monthFilter, setMonthFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const [depositModalOpen, setDepositModalOpen] = useState(false);
+  const itemsPerPage = 50;
 
   const {
     isLoading: isLoadingSaving,
@@ -148,7 +150,36 @@ function SavingsDetail() {
     doc.save(`savings_report_${saving.account_number}.pdf`);
   };
 
-  if (isLoadingSaving || isLoadingMember) return <MemberLoadingSpinner />;
+const PersonalSavingDetailSkeleton = () => (
+  <div className="mx-auto p-4 sm:p-6 space-y-6 animate-pulse">
+    <div className="h-4 w-48 bg-slate-200 rounded" />
+    <div className="flex justify-between items-center">
+      <div className="space-y-2">
+        <div className="h-6 w-64 bg-slate-200 rounded" />
+        <div className="h-4 w-40 bg-slate-200 rounded" />
+      </div>
+      <div className="h-10 w-32 bg-slate-200 rounded" />
+    </div>
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="lg:col-span-2 space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+          <div className="h-24 bg-slate-200 rounded-lg" />
+          <div className="h-24 bg-slate-200 rounded-lg" />
+        </div>
+        <div className="h-96 bg-slate-200 rounded-lg" />
+      </div>
+      <div className="h-96 bg-slate-200 rounded-lg" />
+    </div>
+  </div>
+);
+
+  if (isLoadingSaving || isLoadingMember) {
+    return (
+      <div className="min-h-screen bg-gray-50/50">
+        <PersonalSavingDetailSkeleton />
+      </div>
+    );
+  }
   if (!saving || !member)
     return (
       <div className="p-8 text-center text-muted-foreground">
@@ -164,7 +195,7 @@ function SavingsDetail() {
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink href="/sacco-admin/personal">
-                Personal Dashboard
+                Personal Profile
               </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
@@ -176,12 +207,12 @@ function SavingsDetail() {
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <div className="flex items-center gap-3 mb-1">
-              <h1 className="text-3xl font-bold text-gray-900">
+              <h1 className="text-xl font-semibold text-gray-900">
                 {saving.account_type}
               </h1>
               <Badge
                 variant={saving.is_active ? "default" : "secondary"}
-                className={saving.is_active ? "bg-[#045e32]" : ""}
+                className={saving.is_active ? "bg-[#045138]" : ""}
               >
                 {saving.is_active ? "Active" : "Inactive"}
               </Badge>
@@ -191,7 +222,12 @@ function SavingsDetail() {
             </p>
           </div>
           <div className="flex gap-3">
-            <Button className="bg-[#045e32] hover:bg-[#034625]">Deposit</Button>
+            <Button
+              className="bg-[#045138] hover:bg-[#034625]"
+              onClick={() => setDepositModalOpen(true)}
+            >
+              Deposit
+            </Button>
           </div>
         </div>
 
@@ -204,7 +240,7 @@ function SavingsDetail() {
               className={`
                                 w-full rounded py-2.5 px-6 text-sm font-medium leading-5 ring-white ring-opacity-60 ring-offset-2 ring-offset-blue-400 focus:outline-none focus:ring-2
                                 ${activeTab === tab
-                  ? "bg-white text-[#045e32] shadow"
+                  ? "bg-white text-[#045138] shadow"
                   : "text-gray-600 hover:bg-white/[0.12] hover:text-gray-800"
                 }
                             `}
@@ -220,7 +256,7 @@ function SavingsDetail() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-[#045e32]">
+                  <CardTitle className="text-[#045138]">
                     Account Overview
                   </CardTitle>
                 </CardHeader>
@@ -229,7 +265,7 @@ function SavingsDetail() {
                     <span className="text-muted-foreground">
                       Available Balance
                     </span>
-                    <span className="font-bold text-2xl text-[#045e32]">
+                    <span className="font-semibold text-xl text-[#045138]">
                       {formatCurrency(saving.balance)}
                     </span>
                   </div>
@@ -250,7 +286,7 @@ function SavingsDetail() {
 
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-[#045e32]">
+                  <CardTitle className="text-[#045138]">
                     Account Details
                   </CardTitle>
                 </CardHeader>
@@ -306,51 +342,53 @@ function SavingsDetail() {
                 </div>
               </CardHeader>
               <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow className="bg-gray-50">
-                      <TableHead>Date</TableHead>
-                      <TableHead>Type</TableHead>
-                      <TableHead>Amount</TableHead>
-                      <TableHead>Method</TableHead>
-                      <TableHead>Status</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {paginatedTransactions.map((t, i) => (
-                      <TableRow key={i}>
-                        <TableCell>{formatDate(t.date)}</TableCell>
-                        <TableCell>
-                          <span
-                            className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium 
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="bg-gray-50">
+                        <TableHead>Date</TableHead>
+                        <TableHead>Type</TableHead>
+                        <TableHead>Amount</TableHead>
+                        <TableHead>Method</TableHead>
+                        <TableHead>Status</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {paginatedTransactions.map((t, i) => (
+                        <TableRow key={i}>
+                          <TableCell>{formatDate(t.date)}</TableCell>
+                          <TableCell>
+                            <span
+                              className={`inline-flex items-center px-2 py-1 rounded text-xs font-medium 
                                                         ${t.type ===
-                                "Withdrawal"
-                                ? "bg-red-100 text-red-800"
-                                : "bg-green-100 text-green-800"
-                              }`}
+                                  "Withdrawal"
+                                  ? "bg-red-100 text-red-800"
+                                  : "bg-green-100 text-green-800"
+                                }`}
+                            >
+                              {t.type}
+                            </span>
+                          </TableCell>
+                          <TableCell className="font-medium">
+                            {formatCurrency(t.amount)}
+                          </TableCell>
+                          <TableCell>{t.method}</TableCell>
+                          <TableCell>{t.status}</TableCell>
+                        </TableRow>
+                      ))}
+                      {paginatedTransactions.length === 0 && (
+                        <TableRow>
+                          <TableCell
+                            colSpan={5}
+                            className="text-center h-24 text-muted-foreground"
                           >
-                            {t.type}
-                          </span>
-                        </TableCell>
-                        <TableCell className="font-medium">
-                          {formatCurrency(t.amount)}
-                        </TableCell>
-                        <TableCell>{t.method}</TableCell>
-                        <TableCell>{t.status}</TableCell>
-                      </TableRow>
-                    ))}
-                    {paginatedTransactions.length === 0 && (
-                      <TableRow>
-                        <TableCell
-                          colSpan={5}
-                          className="text-center h-24 text-muted-foreground"
-                        >
-                          No transactions found
-                        </TableCell>
-                      </TableRow>
-                    )}
-                  </TableBody>
-                </Table>
+                            No transactions found
+                          </TableCell>
+                        </TableRow>
+                      )}
+                    </TableBody>
+                  </Table>
+                </div>
 
                 {totalPages > 1 && (
                   <div className="flex items-center justify-end space-x-2 py-4">
@@ -382,6 +420,11 @@ function SavingsDetail() {
           )}
         </div>
       </div>
+      <MpesaCreateDepositForm
+        isOpen={depositModalOpen}
+        onClose={() => setDepositModalOpen(false)}
+        savings_account={saving}
+      />
     </div>
   );
 }

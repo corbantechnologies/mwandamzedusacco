@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
-import {
-    Search,
-    Download,
-    Plus,
-    Banknote,
-    ChevronRight,
+import { 
+    Search, 
+    Download, 
+    Plus, 
+    Banknote, 
+    ChevronRight, 
     Filter,
     Calendar as CalendarIcon,
     History,
@@ -46,6 +46,20 @@ import { formatCurrency } from "@/lib/utils";
 import CreateExistingLoanPayment from "@/forms/existingloanspayments/CreateExistingLoanPayment";
 import BulkUploadCreateExistingLoanPayment from "@/forms/existingloanspayments/BulkUploadCreateExistingLoanPayment";
 
+const TableSkeleton = ({ rows = 5, cols = 5 }) => {
+    return (
+        <div className="space-y-4 w-full animate-pulse p-4">
+            {[...Array(rows)].map((_, i) => (
+                <div key={i} className="flex gap-4 items-center py-2 border-b border-slate-100 last:border-0">
+                    {[...Array(cols)].map((_, j) => (
+                        <div key={j} className="h-6 bg-slate-100 rounded flex-1" />
+                    ))}
+                </div>
+            ))}
+        </div>
+    );
+};
+
 export default function ExistingLoanPaymentsPage() {
     const router = useRouter();
     const { data: payments, isLoading, refetch } = useFetchExistingLoanPayments();
@@ -58,8 +72,6 @@ export default function ExistingLoanPaymentsPage() {
         p.loan_acc?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         p.payment_method?.toLowerCase().includes(searchTerm.toLowerCase())
     );
-
-    if (isLoading) return <LoadingSpinner />;
 
     return (
         <div className="min-h-screen bg-slate-50/50 p-4 md:p-8 space-y-8 animate-in fade-in duration-500">
@@ -84,11 +96,11 @@ export default function ExistingLoanPaymentsPage() {
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 bg-white p-8 rounded border shadow-sm ring-4 ring-blue-50/20">
                 <div className="space-y-1">
                     <div className="flex items-center gap-4">
-                        <div className="p-3 bg-accent rounded shadow-sm">
+                        <div className="p-3 bg-[#174271] rounded shadow-sm">
                             <History className="w-6 h-6 text-white" />
                         </div>
                         <div>
-                            <h1 className="text-3xl font-semibold text-[#174271] tracking-tight">Onboarding Payments</h1>
+                            <h1 className="text-xl font-semibold text-[#174271] tracking-tight">Onboarding Payments</h1>
                             <p className="text-slate-500 font-medium text-sm flex items-center gap-2">
                                 <span className="uppercase tracking-widest text-[10px] font-semibold bg-blue-50 text-[#174271] px-2 py-0.5 rounded">Legacy Systems</span>
                                 • Historical payment trails for migrated loans
@@ -98,16 +110,16 @@ export default function ExistingLoanPaymentsPage() {
                 </div>
 
                 <div className="flex gap-3 w-full md:w-auto">
-                    <Button
+                    <Button 
                         variant="outline"
                         onClick={() => setIsUploadModalOpen(true)}
                         className="border-slate-200 text-slate-600 font-semibold h-12 px-6 rounded hover:bg-slate-50 flex items-center gap-2"
                     >
                         <Download className="w-5 h-5 opacity-50" /> Bulk Upload
                     </Button>
-                    <Button
+                    <Button 
                         onClick={() => setIsCreateModalOpen(true)}
-                        className="bg-accent hover:bg-[#12355a] text-white font-semibold h-12 px-8 rounded shadow-sm flex items-center gap-2 transition-all active:scale-95"
+                        className="bg-[#174271] hover:bg-[#12355a] text-white font-semibold h-12 px-8 rounded shadow-sm flex items-center gap-2 transition-all active:scale-95"
                     >
                         <Plus className="w-5 h-5" /> Record Payment
                     </Button>
@@ -119,14 +131,14 @@ export default function ExistingLoanPaymentsPage() {
                 <CardHeader className="bg-white border-b px-8 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
                     <div className="relative w-full md:w-96 group">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-[#174271] transition-colors" />
-                        <Input
-                            placeholder="Search by code, account or method..."
+                        <Input 
+                            placeholder="Search by code, account or method..." 
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
                             className="pl-10 h-10 border-slate-200 focus:ring-2 focus:ring-blue-100 rounded bg-slate-50/50 focus:bg-white transition-all font-medium"
                         />
                     </div>
-
+                    
                     <div className="flex items-center gap-2">
                         <Badge variant="outline" className="h-8 px-3 rounded bg-slate-50 text-slate-600 font-semibold text-[10px] border-slate-200 uppercase tracking-tight">
                             Total Records: {filteredPayments?.length || 0}
@@ -146,7 +158,13 @@ export default function ExistingLoanPaymentsPage() {
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
-                                {filteredPayments?.length > 0 ? (
+                                {isLoading ? (
+                                    <TableRow>
+                                        <TableCell colSpan={5} className="p-6">
+                                            <TableSkeleton rows={5} cols={5} />
+                                        </TableCell>
+                                    </TableRow>
+                                ) : filteredPayments?.length > 0 ? (
                                     filteredPayments.map((payment) => (
                                         <TableRow key={payment.reference} className="hover:bg-blue-50/30 transition-all border-b border-slate-50 group">
                                             <TableCell className="font-semibold text-slate-700 pl-8 py-5">
@@ -187,7 +205,7 @@ export default function ExistingLoanPaymentsPage() {
                                                     <p className="font-semibold text-[#174271] text-lg uppercase tracking-tight">No Payments Found</p>
                                                     <p className="text-sm font-medium">Try adjusting your filters or record a new payment to begin.</p>
                                                 </div>
-                                                <Button onClick={() => setIsCreateModalOpen(true)} className="bg-accent mt-2 font-semibold px-8 rounded">
+                                                <Button onClick={() => setIsCreateModalOpen(true)} className="bg-[#174271] mt-2 font-semibold px-8 rounded">
                                                     Record First Payment
                                                 </Button>
                                             </div>
@@ -201,13 +219,13 @@ export default function ExistingLoanPaymentsPage() {
             </Card>
 
             {/* Modals */}
-            <CreateExistingLoanPayment
-                isOpen={isCreateModalOpen}
-                onClose={() => { setIsCreateModalOpen(false); refetch(); }}
+            <CreateExistingLoanPayment 
+                isOpen={isCreateModalOpen} 
+                onClose={() => { setIsCreateModalOpen(false); refetch(); }} 
             />
-            <BulkUploadCreateExistingLoanPayment
-                isOpen={isUploadModalOpen}
-                onClose={() => { setIsUploadModalOpen(false); refetch(); }}
+            <BulkUploadCreateExistingLoanPayment 
+                isOpen={isUploadModalOpen} 
+                onClose={() => { setIsUploadModalOpen(false); refetch(); }} 
             />
         </div>
     );

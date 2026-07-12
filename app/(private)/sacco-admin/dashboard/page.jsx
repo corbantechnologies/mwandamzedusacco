@@ -77,6 +77,24 @@ export default function SaccoAdminDashboard() {
   const [createLoanProductOpen, setCreateLoanProductOpen] = useState(false);
   const [createFeeTypeOpen, setCreateFeeTypeOpen] = useState(false);
 
+const AdminDashboardSkeleton = () => (
+  <div className="min-h-screen bg-gray-50/50 p-4 md:p-8 space-y-8 animate-pulse">
+    <div className="flex justify-between items-center">
+      <div className="space-y-2">
+        <div className="h-6 w-48 bg-slate-200 rounded" />
+        <div className="h-4 w-64 bg-slate-200 rounded" />
+      </div>
+      <div className="h-10 w-32 bg-slate-200 rounded" />
+    </div>
+    <div className="grid gap-4 md:gap-6 md:grid-cols-2 lg:grid-cols-4">
+      {[...Array(4)].map((_, i) => (
+        <div key={i} className="h-24 bg-slate-200 rounded-lg" />
+      ))}
+    </div>
+    <div className="h-96 bg-slate-200 rounded-lg" />
+  </div>
+);
+
   if (
     isLoadingMyself ||
     isLoadingMembers ||
@@ -84,7 +102,11 @@ export default function SaccoAdminDashboard() {
     isLoadingLoanProducts ||
     isLoadingFeeTypes
   ) {
-    return <LoadingSpinner />;
+    return (
+      <div className="min-h-screen bg-gray-50/50 p-4 md:p-8">
+        <AdminDashboardSkeleton />
+      </div>
+    );
   }
 
   return (

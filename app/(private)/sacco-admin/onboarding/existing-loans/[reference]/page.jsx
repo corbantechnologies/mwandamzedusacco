@@ -1,14 +1,14 @@
 "use client";
 
 import React, { use, useState } from "react";
-import {
-    ArrowLeft,
-    Banknote,
-    History,
-    Info,
-    TrendingUp,
-    CheckCircle2,
-    Clock,
+import { 
+    ArrowLeft, 
+    Banknote, 
+    History, 
+    Info, 
+    TrendingUp, 
+    CheckCircle2, 
+    Clock, 
     AlertCircle,
     User,
     FileText,
@@ -49,21 +49,51 @@ import { useFetchExistingLoan } from "@/hooks/existingloans/actions";
 import LoadingSpinner from "@/components/general/LoadingSpinner";
 import CreateExistingLoanPayment from "@/forms/existingloanspayments/CreateExistingLoanPayment";
 
+const ExistingLoanDetailSkeleton = () => (
+  <div className="mx-auto p-4 sm:p-6 space-y-6 animate-pulse">
+    <div className="h-4 w-48 bg-slate-200 rounded" />
+    <div className="flex justify-between items-center">
+      <div className="space-y-2">
+        <div className="h-6 w-64 bg-slate-200 rounded" />
+        <div className="h-4 w-40 bg-slate-200 rounded" />
+      </div>
+      <div className="h-10 w-32 bg-slate-200 rounded" />
+    </div>
+    <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+      <div className="lg:col-span-3 space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+          <div className="h-24 bg-slate-200 rounded-lg" />
+          <div className="h-24 bg-slate-200 rounded-lg" />
+          <div className="h-24 bg-slate-200 rounded-lg" />
+        </div>
+        <div className="h-96 bg-slate-200 rounded-lg" />
+      </div>
+      <div className="h-96 bg-slate-200 rounded-lg" />
+    </div>
+  </div>
+);
+
 export default function ExistingLoanDetailPage({ params }) {
     const { reference } = use(params);
     const router = useRouter();
     const { data: loan, isLoading, refetch } = useFetchExistingLoan(reference);
     const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 
-    if (isLoading) return <LoadingSpinner />;
+    if (isLoading) {
+        return (
+            <div className="min-h-screen bg-slate-50/50">
+                <ExistingLoanDetailSkeleton />
+            </div>
+        );
+    }
 
     if (!loan) {
         return (
             <div className="p-8 text-center flex flex-col items-center justify-center min-h-[60vh] space-y-4">
                 <AlertCircle className="h-16 w-16 text-red-500 opacity-20" />
-                <h2 className="text-2xl font-bold text-slate-900 tracking-tight">Loan Not Found</h2>
+                <h2 className="text-xl font-semibold text-slate-900 tracking-tight">Loan Not Found</h2>
                 <p className="text-slate-500 font-medium">The existing loan account you are looking for does not exist or has been removed.</p>
-                <Button onClick={() => router.push("/sacco-admin/onboarding/existing-loans")} className="bg-accent mt-4 font-bold rounded">
+                <Button onClick={() => router.push("/sacco-admin/onboarding/existing-loans")} className="bg-[#174271] mt-4 font-semibold rounded">
                     Back to Inventory
                 </Button>
             </div>
@@ -89,15 +119,15 @@ export default function ExistingLoanDetailPage({ params }) {
             <Breadcrumb>
                 <BreadcrumbList>
                     <BreadcrumbItem>
-                        <BreadcrumbLink href="/sacco-admin/dashboard" className="text-[11px] font-bold uppercase tracking-wider">Dashboard</BreadcrumbLink>
+                        <BreadcrumbLink href="/sacco-admin/dashboard" className="text-[11px] font-semibold uppercase tracking-wider">Dashboard</BreadcrumbLink>
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
-                        <BreadcrumbLink href="/sacco-admin/onboarding/existing-loans" className="text-[11px] font-bold uppercase tracking-wider">Onboarding</BreadcrumbLink>
+                        <BreadcrumbLink href="/sacco-admin/onboarding/existing-loans" className="text-[11px] font-semibold uppercase tracking-wider">Onboarding</BreadcrumbLink>
                     </BreadcrumbItem>
                     <BreadcrumbSeparator />
                     <BreadcrumbItem>
-                        <BreadcrumbPage className="text-[11px] font-bold uppercase tracking-wider text-[#174271]">Loan Details</BreadcrumbPage>
+                        <BreadcrumbPage className="text-[11px] font-semibold uppercase tracking-wider text-[#174271]">Loan Details</BreadcrumbPage>
                     </BreadcrumbItem>
                 </BreadcrumbList>
             </Breadcrumb>
@@ -105,9 +135,9 @@ export default function ExistingLoanDetailPage({ params }) {
             {/* Header */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                 <div className="flex items-center gap-5">
-                    <Button
-                        variant="ghost"
-                        size="icon"
+                    <Button 
+                        variant="ghost" 
+                        size="icon" 
                         onClick={() => router.back()}
                         className="h-12 w-12 rounded bg-white shadow-sm border border-slate-200 hover:bg-slate-50 transition-all active:scale-95"
                     >
@@ -115,7 +145,7 @@ export default function ExistingLoanDetailPage({ params }) {
                     </Button>
                     <div className="space-y-1">
                         <div className="flex items-center gap-3">
-                            <h1 className="text-3xl font-semibold text-[#174271] tracking-tight">
+                            <h1 className="text-xl font-semibold text-[#174271] tracking-tight">
                                 {loan.member_name}
                             </h1>
                             <Badge className={`px-4 py-1 rounded font-semibold uppercase tracking-widest text-[10px] ${getStatusStyles(loan.status)}`} variant="outline">
@@ -123,17 +153,17 @@ export default function ExistingLoanDetailPage({ params }) {
                             </Badge>
                         </div>
                         <p className="text-slate-500 font-medium flex items-center gap-2">
-                            <span className="font-mono text-xs bg-slate-100 px-2 py-0.5 rounded border">ACC: {loan.account_number}</span>
-                            <span className="text-slate-300">•</span>
-                            <span className="text-xs uppercase tracking-tighter">Onboarded Account Detail</span>
+                             <span className="font-mono text-xs bg-slate-100 px-2 py-0.5 rounded border">ACC: {loan.account_number}</span>
+                             <span className="text-slate-300">•</span>
+                             <span className="text-xs uppercase tracking-tighter">Onboarded Account Detail</span>
                         </p>
                     </div>
                 </div>
 
                 <div className="flex gap-3 w-full md:w-auto">
-                    <Button
+                    <Button 
                         onClick={() => setIsPaymentModalOpen(true)}
-                        className="bg-accent hover:bg-[#12355a] text-white font-semibold h-12 px-8 rounded shadow-sm flex-1 md:flex-none flex items-center gap-2 transition-all active:scale-95"
+                        className="bg-[#174271] hover:bg-[#12355a] text-white font-semibold h-12 px-8 rounded shadow-sm flex-1 md:flex-none flex items-center gap-2 transition-all active:scale-95"
                     >
                         <Banknote className="w-5 h-5" /> Log Payment
                     </Button>
@@ -145,7 +175,7 @@ export default function ExistingLoanDetailPage({ params }) {
                 <div className="lg:col-span-3 space-y-8">
                     {/* Financial Summary Cards */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <Card className="bg-accent border-none shadow-sm text-white rounded overflow-hidden relative group">
+                        <Card className="bg-[#174271] border-none shadow-sm text-white rounded overflow-hidden relative group">
                             <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:scale-110 transition-transform duration-500">
                                 <TrendingUp className="w-24 h-24" />
                             </div>
@@ -153,7 +183,7 @@ export default function ExistingLoanDetailPage({ params }) {
                                 <CardDescription className="text-blue-100/70 font-semibold text-[10px] uppercase tracking-[0.2em]">Outstanding Balance</CardDescription>
                             </CardHeader>
                             <CardContent>
-                                <p className="text-3xl font-semibold">KES {Number(loan.outstanding_balance).toLocaleString()}</p>
+                                <p className="text-xl font-semibold">KES {Number(loan.outstanding_balance).toLocaleString()}</p>
                             </CardContent>
                         </Card>
 
@@ -162,7 +192,7 @@ export default function ExistingLoanDetailPage({ params }) {
                                 <CardDescription className="text-slate-400 font-semibold text-[10px] uppercase tracking-wider">Total Principal</CardDescription>
                             </CardHeader>
                             <CardContent>
-                                <p className="text-2xl font-semibold text-slate-900">KES {Number(loan.principal).toLocaleString()}</p>
+                                <p className="text-xl font-semibold text-slate-900">KES {Number(loan.principal).toLocaleString()}</p>
                             </CardContent>
                         </Card>
 
@@ -171,7 +201,7 @@ export default function ExistingLoanDetailPage({ params }) {
                                 <CardDescription className="text-slate-400 font-semibold text-[10px] uppercase tracking-wider">Recovered Amount</CardDescription>
                             </CardHeader>
                             <CardContent>
-                                <p className="text-2xl font-semibold text-slate-900">KES {Number(loan.total_amount_paid).toLocaleString()}</p>
+                                <p className="text-xl font-semibold text-slate-900">KES {Number(loan.total_amount_paid).toLocaleString()}</p>
                             </CardContent>
                         </Card>
                     </div>
@@ -250,7 +280,7 @@ export default function ExistingLoanDetailPage({ params }) {
                         </CardHeader>
                         <CardContent className="p-5 space-y-4">
                             <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 rounded bg-accent flex items-center justify-center text-white font-semibold text-lg shadow-sm ring-4 ring-blue-50">
+                                <div className="w-12 h-12 rounded bg-[#174271] flex items-center justify-center text-white font-semibold text-lg shadow-sm ring-4 ring-blue-50">
                                     {loan.member_name?.charAt(0) || "U"}
                                 </div>
                                 <div className="space-y-0.5">
@@ -290,8 +320,8 @@ export default function ExistingLoanDetailPage({ params }) {
                             </div>
                         </CardContent>
                     </Card>
-
-                    <div className="p-6 bg-accent rounded text-white space-y-4 shadow-sm ring-4 ring-blue-50">
+                    
+                    <div className="p-6 bg-[#174271] rounded text-white space-y-4 shadow-sm ring-4 ring-blue-50">
                         <div className="flex items-center gap-3">
                             <Info className="w-5 h-5 text-blue-200" />
                             <p className="font-semibold text-sm tracking-tight">Onboarding Notice</p>
@@ -304,9 +334,9 @@ export default function ExistingLoanDetailPage({ params }) {
             </div>
 
             {/* Modals */}
-            <CreateExistingLoanPayment
-                isOpen={isPaymentModalOpen}
-                onClose={() => { setIsPaymentModalOpen(false); refetch(); }}
+            <CreateExistingLoanPayment 
+                isOpen={isPaymentModalOpen} 
+                onClose={() => { setIsPaymentModalOpen(false); refetch(); }} 
                 initialLoanAcc={loan.account_number}
             />
         </div>

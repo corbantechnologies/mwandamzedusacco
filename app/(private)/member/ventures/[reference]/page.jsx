@@ -142,7 +142,36 @@ function VentureDetail() {
         doc.save(`venture_report_${venture.account_number}.pdf`);
     };
 
-    if (isLoadingVenture || isLoadingMember) return <MemberLoadingSpinner />;
+const PersonalVentureDetailSkeleton = () => (
+  <div className="mx-auto p-4 sm:p-6 space-y-6 animate-pulse">
+    <div className="h-4 w-48 bg-slate-200 rounded" />
+    <div className="flex justify-between items-center">
+      <div className="space-y-2">
+        <div className="h-6 w-64 bg-slate-200 rounded" />
+        <div className="h-4 w-40 bg-slate-200 rounded" />
+      </div>
+      <div className="h-10 w-32 bg-slate-200 rounded" />
+    </div>
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="lg:col-span-2 space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+          <div className="h-24 bg-slate-200 rounded-lg" />
+          <div className="h-24 bg-slate-200 rounded-lg" />
+        </div>
+        <div className="h-96 bg-slate-200 rounded-lg" />
+      </div>
+      <div className="h-96 bg-slate-200 rounded-lg" />
+    </div>
+  </div>
+);
+
+    if (isLoadingVenture || isLoadingMember) {
+        return (
+            <div className="min-h-screen bg-gray-50/50">
+                <PersonalVentureDetailSkeleton />
+            </div>
+        );
+    }
     if (!venture || !member) return <div className="p-8 text-center text-muted-foreground">Venture account not found.</div>;
 
     return (

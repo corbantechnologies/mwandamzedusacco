@@ -46,8 +46,6 @@ import {
 import { apiActions } from "@/tools/axios";
 import CreateDepositAdmin from "@/forms/savingsdeposits/CreateDepositAdmin";
 import CreateLoanAccountAdmin from "@/forms/loans/CreateLoanAdmin";
-import CreateVentureDeposits from "@/forms/venturedeposits/CreateVentureDeposits";
-import CreateVenturePayment from "@/forms/venturepayments/CreateVenturePayment";
 import CreateFeePayment from "@/forms/feepayments/CreateFeePayment";
 import UpdateMemberRole from "@/forms/members/UpdateMemberRole";
 import { useFetchLoanProducts } from "@/hooks/loanproducts/actions";
@@ -56,11 +54,25 @@ import MemberFinancialSummary from "@/components/members/dashboard/MemberFinanci
 import { downloadMemberSummary } from "@/services/membersummary";
 import { Download, Loader2 } from "lucide-react";
 import EmptyState from "@/components/general/EmptyState";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+
+const MemberDetailSkeleton = () => (
+  <div className="mx-auto space-y-8 animate-pulse p-4 md:p-6">
+    <div className="h-4 w-48 bg-slate-200 rounded" />
+    <div className="h-40 bg-slate-200 rounded-lg" />
+    <div className="grid lg:grid-cols-3 gap-8">
+      <div className="lg:col-span-2 space-y-8">
+        <div className="h-64 bg-slate-200 rounded-lg" />
+        <div className="h-48 bg-slate-200 rounded-lg" />
+      </div>
+      <div className="h-64 bg-slate-200 rounded-lg" />
+    </div>
+  </div>
+);
 
 function MemberDetail() {
   const { member_no } = useParams();
   const token = useAxiosAuth();
-  const [summaryYear, setSummaryYear] = useState(new Date().getFullYear());
   const {
     isLoading: isLoadingMember,
     data: member,
@@ -72,7 +84,7 @@ function MemberDetail() {
     isLoading: isLoadingSummary,
     data: summary,
     refetch: refetchSummary,
-  } = useFetchMemberSummary(member_no, summaryYear);
+  } = useFetchMemberSummary(member_no);
 
   const { data: loanProducts } = useFetchLoanProducts();
 
@@ -81,8 +93,6 @@ function MemberDetail() {
   const [isTogglingStatus, setIsTogglingStatus] = useState(false);
   const [depositModal, setDepositModal] = useState(false);
   const [loanModal, setLoanModal] = useState(false);
-  const [ventureDepositModal, setVentureDepositModal] = useState(false);
-  const [venturePaymentModal, setVenturePaymentModal] = useState(false);
   const [feePaymentModal, setFeePaymentModal] = useState(false);
   const [roleModal, setRoleModal] = useState(false);
 
@@ -90,7 +100,6 @@ function MemberDetail() {
   const ITEMS_PER_PAGE = 3;
   const [savingsPage, setSavingsPage] = useState(1);
   const [feesPage, setFeesPage] = useState(1);
-  const [venturesPage, setVenturesPage] = useState(1);
   const [loansPage, setLoansPage] = useState(1);
 
   const paginate = (items, page) => {
@@ -222,7 +231,7 @@ function MemberDetail() {
       <Icon className="h-5 w-5 text-primary mt-0.5" />
       <div className="flex-1 min-w-0">
         <p className="text-sm font-medium text-muted-foreground">{label}</p>
-        <p className="text-base font-semibold text-foreground truncate">
+        <p className="text-base font-semibold text-foreground break-words">
           {value || "N/A"}
         </p>
       </div>
@@ -243,7 +252,13 @@ function MemberDetail() {
   if (member?.is_treasurer) activeRoles.push("Treasurer");
   if (member?.is_bookkeeper) activeRoles.push("Bookkeeper");
 
-  if (isLoadingMember) return <LoadingSpinner />;
+  if (isLoadingMember) {
+    return (
+      <div className="min-h-screen bg-background">
+        <MemberDetailSkeleton />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background p-4 md:p-6">
@@ -283,7 +298,7 @@ function MemberDetail() {
 
               <div className="flex-1 space-y-4">
                 <div>
-                  <h1 className="text-2xl md:text-4xl font-bold text-foreground mb-2">
+                  <h1 className="text-xl md:text-xl font-semibold text-foreground mb-2">
                     {member?.first_name}{" "}
                     {member?.middle_name && member.middle_name + " "}
                     {member?.last_name}
@@ -305,7 +320,7 @@ function MemberDetail() {
                     variant={member?.is_approved ? "default" : "secondary"}
                     className={
                       member?.is_approved
-                        ? "bg-green-600 text-white"
+                        ? "bg-[#033d2a] text-white"
                         : "bg-yellow-600 text-white"
                     }
                   >
@@ -363,11 +378,10 @@ function MemberDetail() {
                         variant="ghost"
                         onClick={handleToggleActiveStatus}
                         disabled={isTogglingStatus}
-                        className={`justify-start font-normal h-9 w-full flex items-center gap-2 ${
-                          member?.is_active 
-                            ? "text-destructive hover:text-destructive hover:bg-destructive/10" 
-                            : "text-green-600 hover:text-green-700 hover:bg-green-50"
-                        }`}
+                        className={`justify-start font-normal h-9 w-full flex items-center gap-2 ${member?.is_active
+                          ? "text-destructive hover:text-destructive hover:bg-destructive/10"
+                          : "text-green-600 hover:text-green-700 hover:bg-green-50"
+                          }`}
                       >
                         {isTogglingStatus ? (
                           <Loader2 className="h-4 w-4 animate-spin" />
@@ -386,12 +400,7 @@ function MemberDetail() {
 
         {/* Financial Summary */}
         <div className="mt-8">
-          <MemberFinancialSummary
-            summary={summary}
-            memberNo={member_no}
-            summaryYear={summaryYear}
-            setSummaryYear={setSummaryYear}
-          />
+          <MemberFinancialSummary summary={summary} memberNo={member_no} />
         </div>
 
         {/* Quick Action Cards */}
@@ -399,7 +408,7 @@ function MemberDetail() {
           {/* Savings Accounts */}
           <Card className="shadow-md border-l-4 border-l-blue-500">
             <CardHeader>
-              <div className="flex justify-between items-center">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0">
                 <CardTitle className="flex items-center gap-2 text-xl">
                   <Wallet className="h-6 w-6 text-primary" />
                   Savings Accounts
@@ -408,7 +417,7 @@ function MemberDetail() {
                   <Button
                     onClick={() => setDepositModal(true)}
                     size="sm"
-                    className="h-8 bg-primary hover:bg-primary/90 text-white"
+                    className="h-8 w-full sm:w-auto bg-primary hover:bg-primary/90 text-white"
                   >
                     Deposit
                   </Button>
@@ -419,12 +428,17 @@ function MemberDetail() {
               {member?.savings?.length > 0 ? (
                 <>
                   {paginate(member.savings, savingsPage).map((account) => (
-                    <InfoField
+                    <Link
                       key={account.reference}
-                      icon={Wallet2}
-                      label={`${account.account_type} - ${account.account_number}`}
-                      value={`${formatBalance(account.balance)} KES`}
-                    />
+                      href={`/sacco-admin/saving-accounts/${account.reference}`}
+                      className="block transition-transform hover:scale-[1.01]"
+                    >
+                      <InfoField
+                        icon={Wallet2}
+                        label={`${account.account_type} - ${account.account_number}`}
+                        value={`${formatBalance(account.balance)} KES`}
+                      />
+                    </Link>
                   ))}
                   <PaginationControls
                     currentPage={savingsPage}
@@ -448,7 +462,7 @@ function MemberDetail() {
           {/* Fee Accounts */}
           <Card className="shadow-md border-l-4 border-l-amber-500">
             <CardHeader>
-              <div className="flex justify-between items-center">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0">
                 <CardTitle className="flex items-center gap-2 text-xl">
                   <Shield className="h-6 w-6 text-primary" />
                   Fee Accounts
@@ -457,7 +471,7 @@ function MemberDetail() {
                   <Button
                     onClick={() => setFeePaymentModal(true)}
                     size="sm"
-                    className="h-8 bg-amber-600 hover:bg-amber-700 text-white disabled:bg-slate-300 disabled:text-slate-500"
+                    className="h-8 w-full sm:w-auto bg-amber-600 hover:bg-amber-700 text-white disabled:bg-slate-300 disabled:text-slate-500"
                   >
                     Pay Fee
                   </Button>
@@ -472,7 +486,7 @@ function MemberDetail() {
                       key={account.reference}
                       icon={CreditCard}
                       label={`${account.fee_type} - ${account.account_number}`}
-                      value={`${formatBalance(account.outstanding_balance)} KES | ${formatBalance(account.amount_paid)} KES` }
+                      value={`${formatBalance(account.outstanding_balance)} KES | ${formatBalance(account.amount_paid)} KES`}
                     />
                   ))}
                   <PaginationControls
@@ -494,75 +508,6 @@ function MemberDetail() {
             </CardContent>
           </Card>
 
-          {/* Venture Accounts */}
-          {/* <Card className="shadow-md border-l-4 border-l-emerald-500">
-            <CardHeader>
-              <div className="flex justify-between items-center">
-                <CardTitle className="flex items-center gap-2 text-xl">
-                  <Wallet className="h-6 w-6 text-primary" />
-                  Venture Accounts
-                </CardTitle>
-                {member?.is_approved && (
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                        <MoreVertical className="h-4 w-4" />
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-40 p-2" align="end">
-                      <div className="flex flex-col gap-1">
-                        <Button
-                          onClick={() => setVentureDepositModal(true)}
-                          size="sm"
-                          variant="ghost"
-                          className="justify-start font-normal h-8"
-                        >
-                          Deposit
-                        </Button>
-                        <Button
-                          onClick={() => setVenturePaymentModal(true)}
-                          size="sm"
-                          variant="ghost"
-                          className="justify-start font-normal h-8 text-destructive hover:text-destructive"
-                        >
-                          Pay
-                        </Button>
-                      </div>
-                    </PopoverContent>
-                  </Popover>
-                )}
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {member?.venture_accounts?.length > 0 ? (
-                <>
-                  {paginate(member.venture_accounts, venturesPage).map((account) => (
-                    <InfoField
-                      key={account.reference}
-                      icon={Wallet2}
-                      label={`${account.venture_type} - ${account.account_number}`}
-                      value={`${formatBalance(account.balance)} KES`}
-                    />
-                  ))}
-                  <PaginationControls
-                    currentPage={venturesPage}
-                    totalItems={member.venture_accounts.length}
-                    onPageChange={setVenturesPage}
-                  />
-                </>
-              ) : (
-                <div className="py-4">
-                  <EmptyState
-                    title="No Venture Accounts"
-                    message="This member has no active venture accounts."
-                    icon={Wallet}
-                    className="border-0 bg-transparent p-0"
-                  />
-                </div>
-              )}
-            </CardContent>
-          </Card> */}
-
           {/* Loan Accounts */}
           <Card className="shadow-md border-l-4 border-l-rose-500">
             <CardHeader>
@@ -571,15 +516,6 @@ function MemberDetail() {
                   <CreditCard className="h-6 w-6 text-primary" />
                   Loan Accounts
                 </CardTitle>
-                {/* {member?.is_approved && (
-                  <Button
-                    onClick={() => setLoanModal(true)}
-                    size="sm"
-                    className="h-8 bg-primary hover:bg-primary/90 text-white"
-                  >
-                    Create Loan
-                  </Button>
-                )} */}
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -623,7 +559,7 @@ function MemberDetail() {
           <div className="lg:col-span-2 space-y-8">
             <Card className="shadow-md">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-2xl">
+                <CardTitle className="flex items-center gap-2 text-xl">
                   <User className="h-6 w-6 text-primary" />
                   Personal Information
                 </CardTitle>
@@ -661,7 +597,7 @@ function MemberDetail() {
             {hasEmploymentData && (
               <Card className="shadow-md">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-2xl">
+                  <CardTitle className="flex items-center gap-2 text-xl">
                     <Building className="h-6 w-6 text-primary" />
                     Employment Details
                   </CardTitle>
@@ -689,8 +625,8 @@ function MemberDetail() {
             {member?.guarantor_profile && (
               <Card className="shadow-md border-l-4 border-l-indigo-500">
                 <CardHeader>
-                  <div className="flex justify-between items-center">
-                    <CardTitle className="flex items-center gap-2 text-2xl">
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0">
+                    <CardTitle className="flex items-center gap-2 text-xl">
                       <Shield className="h-6 w-6 text-primary" />
                       Guarantor Profile
                     </CardTitle>
@@ -731,28 +667,28 @@ function MemberDetail() {
 
                   {member.guarantor_profile.guarantees?.length > 0 && (
                     <div className="mt-6">
-                      <h4 className="text-sm font-bold uppercase tracking-wider text-slate-500 mb-3 ml-1">
+                      <h4 className="text-sm font-semibold uppercase tracking-wider text-slate-500 mb-3 ml-1">
                         Active Guarantees
                       </h4>
-                      <div className="overflow-x-auto rounded border border-secondary">
-                        <table className="w-full text-sm text-left">
-                          <thead className="bg-secondary/50 text-muted-foreground font-medium">
-                            <tr>
-                              <th className="p-3">Loan Application</th>
-                              <th className="p-3">Amount</th>
-                              <th className="p-3 text-right">Status</th>
-                            </tr>
-                          </thead>
-                          <tbody className="divide-y divide-secondary">
+                      <div className="overflow-x-auto">
+                        <Table className="w-full text-sm text-left">
+                          <TableHeader>
+                            <TableRow>
+                              <TableHead>Loan Application</TableHead>
+                              <TableHead>Amount</TableHead>
+                              <TableHead>Status</TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
                             {member.guarantor_profile.guarantees.map((guarantee, i) => (
-                              <tr key={i} className="hover:bg-secondary/20">
-                                <td className="p-3 font-mono text-xs">
+                              <TableRow key={i} className="hover:bg-secondary/20">
+                                <TableCell className="text-sm">
                                   {guarantee.loan_application}
-                                </td>
-                                <td className="p-3 font-semibold">
+                                </TableCell>
+                                <TableCell className="text-sm">
                                   {formatBalance(guarantee.guaranteed_amount)} KES
-                                </td>
-                                <td className="p-3 text-right">
+                                </TableCell>
+                                <TableCell className="text-sm">
                                   <Badge
                                     variant="outline"
                                     className={
@@ -763,11 +699,11 @@ function MemberDetail() {
                                   >
                                     {guarantee.status}
                                   </Badge>
-                                </td>
-                              </tr>
+                                </TableCell>
+                              </TableRow>
                             ))}
-                          </tbody>
-                        </table>
+                          </TableBody>
+                        </Table>
                       </div>
                     </div>
                   )}
@@ -805,7 +741,7 @@ function MemberDetail() {
 
             <Card className="shadow-md">
               <CardHeader>
-                <div className="flex justify-between items-center">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0">
                   <CardTitle className="flex items-center gap-2 text-xl">
                     <Settings className="h-5 w-5 text-primary" />
                     Roles & Permissions
@@ -814,7 +750,7 @@ function MemberDetail() {
                     onClick={() => setRoleModal(true)}
                     size="sm"
                     variant="outline"
-                    className="h-8 border-primary text-primary hover:bg-primary/5"
+                    className="h-8 w-full sm:w-auto border-primary text-primary hover:bg-primary/5"
                   >
                     Edit Roles
                   </Button>
@@ -860,7 +796,7 @@ function MemberDetail() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex items-center gap-3 p-3 rounded bg-secondary/50">
-                  <div className="h-3 w-3 rounded bg-green-600"></div>
+                  <div className="h-3 w-3 rounded bg-[#033d2a]"></div>
                   <div>
                     <p className="text-sm font-medium">Account Created</p>
                     <p className="text-xs text-muted-foreground">
@@ -898,20 +834,6 @@ function MemberDetail() {
           member={member}
         />
 
-        <CreateVentureDeposits
-          isOpen={ventureDepositModal}
-          onClose={() => setVentureDepositModal(false)}
-          refetchMember={refetchMember}
-          ventures={member?.venture_accounts}
-        />
-
-        <CreateVenturePayment
-          isOpen={venturePaymentModal}
-          onClose={() => setVenturePaymentModal(false)}
-          refetchMember={refetchMember}
-          ventures={member?.venture_accounts}
-        />
-
         <CreateFeePayment
           isOpen={feePaymentModal}
           onClose={() => setFeePaymentModal(false)}
@@ -919,7 +841,7 @@ function MemberDetail() {
           accounts={member?.fee_accounts}
         />
 
-        <UpdateMemberRole 
+        <UpdateMemberRole
           isOpen={roleModal}
           onClose={() => setRoleModal(false)}
           refetchMember={refetchMember}
