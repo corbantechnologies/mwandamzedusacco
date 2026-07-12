@@ -1,23 +1,37 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Menu as MenuIcon, X as XIcon, ChevronDown, ChevronRight } from "lucide-react";
+import { Menu as MenuIcon, X as XIcon, ChevronDown, ChevronRight, Shield } from "lucide-react";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
 import React, { useState } from "react";
+import { useFetchMember } from "@/hooks/members/actions";
 
 const MENU_LINKS = [
   { label: "Dashboard", href: "/sacco-admin/dashboard" },
-  { label: "Onboarding", href: "/sacco-admin/onboarding" },
-
+  // Members
   {
     label: "Members",
     href: "/sacco-admin/members",
+  },
+  // Products
+  {
+    label: "Savings & Deposits",
+    href: "/sacco-admin/saving-accounts",
     children: [
-      { label: "All Members", href: "/sacco-admin/members" },
+      { label: "All Accounts", href: "/sacco-admin/saving-accounts" },
+      { label: "All Deposits", href: "/sacco-admin/saving-deposits" },
+      { label: "Savings Types", href: "/sacco-admin/setup/saving-types" },
     ],
   },
-
+  {
+    label: "Fees",
+    href: "/sacco-admin/fee-payments",
+    children: [
+      { label: "All Accounts", href: "/sacco-admin/fee-payments" },
+      { label: "Fee Types", href: "/sacco-admin/setup/feetypes" },
+    ],
+  },
   {
     label: "Loans",
     href: "/sacco-admin/loans",
@@ -27,51 +41,29 @@ const MENU_LINKS = [
       { label: "Loan Products", href: "/sacco-admin/setup/loan-products" },
     ],
   },
-
-  {
-    label: "Savings & Deposits",
-    href: "/sacco-admin/saving-deposits",
-    children: [
-      { label: "All Deposits", href: "/sacco-admin/saving-deposits" },
-      { label: "Savings Types", href: "/sacco-admin/setup/saving-types" },
-    ],
-  },
-
+  // Accounting & Reports
   {
     label: "Accounting & Financials",
     href: "/sacco-admin/accounting",
     children: [
       { label: "Accounting Dashboard", href: "/sacco-admin/accounting" },
+      { label: "Reports", href: "/sacco-admin/reports" },
       { label: "GL Accounts", href: "/sacco-admin/setup/gl-accounts" },
-      { label: "Fee Payments", href: "/sacco-admin/fee-payments" },
       { label: "Payment Accounts", href: "/sacco-admin/setup/payment-accounts" },
-      { label: "Fee Types", href: "/sacco-admin/setup/feetypes" },
     ],
   },
-
-  {
-    label: "Reports",
-    href: "/sacco-admin/reports",
-  },
-
+  // Setup
   {
     label: "Setup & Configuration",
     href: "/sacco-admin/setup",
     children: [
-      { label: "Platform Setup", href: "/sacco-admin/setup" },
-
-    ],
-  },
-
-  {
-    label: "Data Onboarding",
-    href: "/sacco-admin/onboarding/existing-loans",
-    children: [
+      { label: "Onboarding", href: "/sacco-admin/onboarding" },
       { label: "Legacy Loans", href: "/sacco-admin/onboarding/existing-loans" },
       { label: "Legacy Payments", href: "/sacco-admin/onboarding/existing-loan-payments" },
+      { label: "Platform Setup", href: "/sacco-admin/setup" },
     ],
   },
-
+  // Personal
   {
     label: "Personal",
     href: "/sacco-admin/personal",
@@ -86,14 +78,20 @@ const MENU_LINKS = [
 const NavItem = ({ link, setIsMenuOpen }) => {
   const [isOpen, setIsOpen] = useState(false);
 
+  const handleClick = () => {
+    if (setIsMenuOpen) {
+      setIsMenuOpen(false);
+    }
+  };
+
   if (link.children) {
     return (
       <div className="flex flex-col">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="flex items-center justify-between w-full px-4 py-3 text-[14px] font-medium hover:bg-slate-50 rounded-lg transition-colors text-left group"
+          className="flex items-center justify-between w-full px-4 py-2.5 text-[14px] font-semibold hover:bg-slate-50 rounded transition-colors text-left group"
         >
-          <span className="group-hover:text-[#174271]">{link.label}</span>
+          <span className="group-hover:text-primary">{link.label}</span>
           {isOpen ? (
             <ChevronDown className="w-4 h-4 text-slate-400" />
           ) : (
@@ -102,13 +100,13 @@ const NavItem = ({ link, setIsMenuOpen }) => {
         </button>
 
         {isOpen && (
-          <div className="ml-6 mt-1 mb-3 flex flex-col border-l border-slate-100 pl-4 space-y-1">
+          <div className="ml-4 mt-1 mb-2 flex flex-col border-l border-slate-100 pl-3 space-y-1">
             {link.children.map((child) => (
               <Link
                 key={child.href}
                 href={child.href}
-                className="px-4 py-2 text-[13px] text-slate-600 hover:text-[#174271] hover:bg-slate-50 rounded transition-colors"
-                onClick={() => setIsMenuOpen(false)}
+                className="px-3 py-1.5 text-[13px] text-slate-600 hover:text-primary hover:bg-slate-50 rounded transition-colors"
+                onClick={handleClick}
               >
                 {child.label}
               </Link>
@@ -122,8 +120,8 @@ const NavItem = ({ link, setIsMenuOpen }) => {
   return (
     <Link
       href={link.href}
-      className="block px-4 py-3 text-[14px] font-medium hover:bg-slate-50 hover:text-[#174271] rounded-lg transition-colors"
-      onClick={() => setIsMenuOpen(false)}
+      className="block px-4 py-2.5 text-[14px] font-semibold hover:bg-slate-50 hover:text-primary rounded transition-colors"
+      onClick={handleClick}
     >
       {link.label}
     </Link>
@@ -131,67 +129,100 @@ const NavItem = ({ link, setIsMenuOpen }) => {
 };
 
 export default function SaccoAdminNavbar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const { data: myself } = useFetchMember();
+
+  const sidebarContent = (setIsMenuOpen) => (
+    <div className="h-full flex flex-col bg-white">
+      <div className="p-6 border-b flex items-center justify-between">
+        <Link
+          href="/sacco-admin/dashboard"
+          className="flex items-center gap-2"
+          onClick={() => setIsMenuOpen && setIsMenuOpen(false)}
+        >
+          <span className="text-xl font-bold tracking-tight text-primary">
+            Mwanda Mzedu
+            <span className="text-[10px] font-normal uppercase tracking-[2px] opacity-75 ml-1.5 block text-slate-500">ADMIN</span>
+          </span>
+        </Link>
+        {setIsMenuOpen && (
+          <Button variant="ghost" size="icon" onClick={() => setIsMenuOpen(false)} className="md:hidden">
+            <XIcon className="h-5 w-5" />
+          </Button>
+        )}
+      </div>
+
+      <nav className="flex-1 overflow-y-auto p-4 space-y-1">
+        {MENU_LINKS.map((link) => (
+          <NavItem key={link.href} link={link} setIsMenuOpen={setIsMenuOpen} />
+        ))}
+        {myself?.is_superuser && (
+          <Link
+            href="/superuser/dashboard"
+            className="flex items-center gap-2 px-4 py-2.5 text-[14px] font-semibold text-red-600 hover:text-red-700 hover:bg-red-50 rounded transition-colors"
+            onClick={() => setIsMenuOpen && setIsMenuOpen(false)}
+          >
+            <Shield className="w-4 h-4 text-red-500" />
+            <span>Superuser Console</span>
+          </Link>
+        )}
+      </nav>
+
+      <div className="p-4 border-t">
+        <Button
+          variant="outline"
+          className="w-full border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700 rounded font-semibold text-xs"
+          onClick={() => {
+            if (setIsMenuOpen) setIsMenuOpen(false);
+            signOut({ callbackUrl: "/login" });
+          }}
+        >
+          Logout
+        </Button>
+      </div>
+    </div>
+  );
 
   return (
     <>
       {/* Top Navbar */}
-      <header className="bg-[#045138] text-white sticky top-0 z-50 shadow">
-        <div className="mx-auto px-6 py-4 flex justify-between items-center">
-          <Link href="/sacco-admin/dashboard" className="flex items-center gap-2">
-            <span className="text-xl md:text-2xl font-bold tracking-tight">
-              Mwanda Mzedu Sacco
-              <span className="text-[10px] font-normal uppercase tracking-[2px] opacity-75 ml-1.5">ADMIN</span>
-            </span>
-          </Link>
-
+      <header className="bg-primary text-white sticky top-0 z-30 shadow h-16 flex items-center justify-between px-4 md:px-6 md:ml-64">
+        <div className="flex items-center gap-2">
           <Button
             variant="ghost"
-            className="text-white hover:bg-white/10"
-            onClick={() => setIsMenuOpen(true)}
+            size="icon"
+            className="text-white hover:bg-white/10 mr-1 md:hidden"
+            onClick={() => setIsMobileOpen(true)}
           >
             <MenuIcon className="h-6 w-6" />
           </Button>
+          <Link href="/sacco-admin/dashboard" className="flex items-center gap-2">
+            <span className="text-xl font-bold tracking-tight">
+              Mwanda Mzedu
+              <span className="text-[10px] font-normal uppercase tracking-[2px] opacity-75 ml-1.5">ADMIN</span>
+            </span>
+          </Link>
         </div>
       </header>
 
-      {/* Sidebar */}
+      {/* Mobile Sidebar (Slides in from Left) */}
       <div
-        className={`fixed inset-y-0 right-0 z-50 w-80 bg-white border-l shadow-2xl flex flex-col transition-transform duration-300 ${isMenuOpen ? "translate-x-0" : "translate-x-full"
+        className={`fixed inset-y-0 left-0 z-50 w-72 bg-white border-r shadow-2xl flex flex-col transition-transform duration-300 md:hidden ${isMobileOpen ? "translate-x-0" : "-translate-x-full"
           }`}
       >
-        <div className="p-6 border-b flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-[#174271]">Main Menu</h2>
-          <Button variant="ghost" size="icon" onClick={() => setIsMenuOpen(false)}>
-            <XIcon className="h-5 w-5" />
-          </Button>
-        </div>
-
-        <nav className="flex-1 overflow-y-auto p-4 space-y-1">
-          {MENU_LINKS.map((link) => (
-            <NavItem key={link.href} link={link} setIsMenuOpen={setIsMenuOpen} />
-          ))}
-        </nav>
-
-        <div className="p-4 border-t">
-          <Button
-            variant="outline"
-            className="w-full border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700"
-            onClick={() => {
-              setIsMenuOpen(false);
-              signOut({ callbackUrl: "/login" });
-            }}
-          >
-            Logout
-          </Button>
-        </div>
+        {sidebarContent(setIsMobileOpen)}
       </div>
 
-      {/* Overlay */}
-      {isMenuOpen && (
+      {/* Desktop Sidebar (Persistent on the Left) */}
+      <aside className="hidden md:flex flex-col w-64 fixed inset-y-0 left-0 z-40 bg-white border-r shadow-sm">
+        {sidebarContent(null)}
+      </aside>
+
+      {/* Overlay for mobile drawer */}
+      {isMobileOpen && (
         <div
-          className="fixed inset-0 bg-black/60 z-40"
-          onClick={() => setIsMenuOpen(false)}
+          className="fixed inset-0 bg-black/60 z-40 md:hidden"
+          onClick={() => setIsMobileOpen(false)}
         />
       )}
     </>

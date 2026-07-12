@@ -35,6 +35,20 @@ import { formatCurrency } from "@/lib/utils";
 import { CreateLoanApplication } from "@/forms/loanapplications/CreateLoanApplication";
 import { LoanProductShowcase } from "@/components/loans/LoanProductShowcase";
 
+const TableSkeleton = ({ rows = 5, cols = 5 }) => {
+  return (
+    <div className="space-y-4 w-full animate-pulse p-4">
+      {[...Array(rows)].map((_, i) => (
+        <div key={i} className="flex gap-4 items-center py-2 border-b border-slate-100 last:border-0">
+          {[...Array(cols)].map((_, j) => (
+            <div key={j} className="h-6 bg-slate-100 rounded flex-1" />
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+};
+
 export default function LoanApplications() {
   const {
     data: loanApplications,
@@ -42,8 +56,6 @@ export default function LoanApplications() {
     refetch,
   } = useFetchLoanApplications();
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-
-  if (isLoading) return <MemberLoadingSpinner />;
 
   // Handle initial loading or empty states gracefully
   const applications = loanApplications;
@@ -92,18 +104,16 @@ export default function LoanApplications() {
           </div>
           <Button
             onClick={() => setIsCreateModalOpen(true)}
-            className="bg-[#236c2e] hover:bg-[#1a5222] shadow-sm"
+            className="bg-[#045138] hover:bg-[#033d2a] shadow-sm text-white"
           >
             <Plus className="mr-2 h-4 w-4" />
             New Application
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-
-          {/* Right side - Loan Product Showcase */}
-          <div className="md:col-span-2">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          {/* Recent Applications list */}
+          <div className="lg:col-span-3">
             <Card>
               <CardHeader>
                 <CardTitle>Recent Applications</CardTitle>
@@ -112,7 +122,9 @@ export default function LoanApplications() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                {applications?.length === 0 ? (
+                {isLoading ? (
+                  <TableSkeleton rows={5} cols={6} />
+                ) : applications?.length === 0 ? (
                   <div className="text-center py-12 bg-gray-50 rounded border border-dashed">
                     <p className="text-muted-foreground">
                       No loan applications found.
@@ -185,8 +197,8 @@ export default function LoanApplications() {
             </Card>
           </div>
 
-          {/* Left side - Loan Product Showcase */}
-          <div className="md:col-span-1">
+          {/* Loan Product Showcase */}
+          <div className="lg:col-span-1">
             <LoanProductShowcase />
           </div>
         </div>

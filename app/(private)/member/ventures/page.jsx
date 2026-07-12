@@ -16,7 +16,25 @@ import {
 function VenturesPage() {
     const { data: ventures, isLoading, isError } = useFetchVentures();
 
-    if (isLoading) return <MemberLoadingSpinner />;
+const PersonalVenturesSkeleton = () => (
+  <div className="w-full px-4 sm:px-6 py-6 space-y-6 animate-pulse">
+    <div className="h-4 w-48 bg-slate-200 rounded" />
+    <div className="h-6 w-32 bg-slate-200 rounded" />
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {[...Array(3)].map((_, i) => (
+        <div key={i} className="h-56 bg-slate-200 rounded-lg" />
+      ))}
+    </div>
+  </div>
+);
+
+    if (isLoading) {
+        return (
+            <div className="min-h-screen bg-gray-50/50">
+                <PersonalVenturesSkeleton />
+            </div>
+        );
+    }
     if (isError) return <div className="p-8 text-center text-red-500">Failed to load venture accounts.</div>;
 
     const ventureList = Array.isArray(ventures) ? ventures : (ventures?.results || []);

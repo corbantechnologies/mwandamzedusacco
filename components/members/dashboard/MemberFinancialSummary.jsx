@@ -37,15 +37,18 @@ import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
 import { Download, Loader2 } from "lucide-react";
 
-export default function MemberFinancialSummary({ summary, memberNo }) {
+export default function MemberFinancialSummary({ summary, memberNo, summaryYear, setSummaryYear }) {
   const token = useAxiosAuth();
   const [isDownloading, setIsDownloading] = useState(false);
+
+  const currentYear = new Date().getFullYear();
+  const years = Array.from({ length: 5 }, (_, i) => currentYear - i);
 
   const handleDownload = async () => {
     if (!memberNo) return;
     setIsDownloading(true);
     try {
-      const blob = await downloadMemberSummary(memberNo, token);
+      const blob = await downloadMemberSummary(memberNo, summaryYear, token);
       const url = window.URL.createObjectURL(new Blob([blob]));
       const link = document.createElement("a");
       link.href = url;
@@ -68,28 +71,46 @@ export default function MemberFinancialSummary({ summary, memberNo }) {
     <Card className="shadow-md">
       <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <CardTitle className="text-xl">Financial Summary ({summary.year})</CardTitle>
+          <CardTitle className="text-xl">Financial Summary</CardTitle>
           <CardDescription>
             Yearly breakdown of your financial activities
           </CardDescription>
         </div>
 
-        {memberNo && (
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={handleDownload}
-            disabled={isDownloading}
-            className="flex items-center gap-2 w-full sm:w-auto"
-          >
-            {isDownloading ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : (
-              <Download className="h-4 w-4" />
-            )}
-            Download PDF
-          </Button>
-        )}
+        <div className="flex items-center gap-3 w-full sm:w-auto">
+          {summaryYear && setSummaryYear && (
+            <Select 
+              value={summaryYear.toString()} 
+              onValueChange={(val) => setSummaryYear(parseInt(val))}
+            >
+              <SelectTrigger className="w-[120px] bg-white text-slate-800 border-slate-300 font-semibold text-xs h-9">
+                <SelectValue placeholder="Select Year" />
+              </SelectTrigger>
+              <SelectContent>
+                {years.map(y => (
+                  <SelectItem key={y} value={y.toString()}>{y}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
+
+          {memberNo && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleDownload}
+              disabled={isDownloading}
+              className="flex items-center gap-2 w-full sm:w-auto font-semibold text-xs h-9"
+            >
+              {isDownloading ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <Download className="h-4 w-4" />
+              )}
+              Download PDF
+            </Button>
+          )}
+        </div>
       </CardHeader>
 
       <CardContent>

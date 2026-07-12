@@ -33,9 +33,6 @@ function UpdateMemberRole({ isOpen, onClose, refetchMember, member }) {
           initialValues={{
             is_member: member?.is_member || false,
             is_sacco_admin: member?.is_sacco_admin || false,
-            is_sacco_staff: member?.is_sacco_staff || false,
-            is_treasurer: member?.is_treasurer || false,
-            is_bookkeeper: member?.is_bookkeeper || false,
           }}
           enableReinitialize
           onSubmit={async (values) => {
@@ -70,30 +67,6 @@ function UpdateMemberRole({ isOpen, onClose, refetchMember, member }) {
                     onCheckedChange={(checked) => setFieldValue("is_sacco_admin", checked)} 
                   />
                   <Label htmlFor="is_sacco_admin" className="font-medium cursor-pointer text-base">SACCO Admin</Label>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <Checkbox 
-                    id="is_sacco_staff" 
-                    checked={values.is_sacco_staff} 
-                    onCheckedChange={(checked) => setFieldValue("is_sacco_staff", checked)} 
-                  />
-                  <Label htmlFor="is_sacco_staff" className="font-medium cursor-pointer text-base">SACCO Staff</Label>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <Checkbox 
-                    id="is_treasurer" 
-                    checked={values.is_treasurer} 
-                    onCheckedChange={(checked) => setFieldValue("is_treasurer", checked)} 
-                  />
-                  <Label htmlFor="is_treasurer" className="font-medium cursor-pointer text-base">Treasurer</Label>
-                </div>
-                <div className="flex items-center space-x-3">
-                  <Checkbox 
-                    id="is_bookkeeper" 
-                    checked={values.is_bookkeeper} 
-                    onCheckedChange={(checked) => setFieldValue("is_bookkeeper", checked)} 
-                  />
-                  <Label htmlFor="is_bookkeeper" className="font-medium cursor-pointer text-base">Bookkeeper</Label>
                 </div>
               </div>
 
