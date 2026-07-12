@@ -40,18 +40,10 @@ function LoginForm() {
         setLoading(false);
       } else {
         toast?.success("Login successful! Redirecting...");
-        if (session?.user?.is_staff === true) {
-          router.push("/sacco-admin/dashboard");
-        } else if (session?.user?.is_system_admin === true) {
-          router.push("/sacco-admin/dashboard");
-        } else if (session?.user?.is_treasurer === true) {
-          router.push("/sacco-admin/dashboard");
-        } else if (session?.user?.is_bookkeeper === true) {
-          router.push("/sacco-admin/dashboard");
-        } else if (session?.user?.is_sacco_staff === true) {
-          router.push("/sacco-admin/dashboard");
+        if (session?.user?.is_superuser === true) {
+          router.push("https://admin.mwandamzedusacco.com/login");
         } else if (session?.user?.is_sacco_admin === true) {
-          router.push("/sacco-admin/dashboard");
+          router.push("https://admin.mwandamzedusacco.com/login");
         } else if (session?.user?.is_member === true) {
           router.push("/member/dashboard");
         } else {
